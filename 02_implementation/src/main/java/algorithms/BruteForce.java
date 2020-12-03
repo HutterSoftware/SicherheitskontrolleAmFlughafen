@@ -1,3 +1,7 @@
+package algorithms;
+
+import algorithms.IStringMatching;
+
 public class BruteForce implements IStringMatching {
     public static void main(String... args) {
         BruteForce bruteForce = new BruteForce();

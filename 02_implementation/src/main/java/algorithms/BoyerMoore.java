@@ -1,3 +1,7 @@
+package algorithms;
+
+import algorithms.IStringMatching;
+
 public class BoyerMoore implements IStringMatching {
     public static void main(String... args) {
         BoyerMoore boyerMoore = new BoyerMoore();

@@ -11,9 +11,13 @@ public class AES {
     private SecretKeySpec secretKey;
     private byte[] key;
 
-    public String decrypt(String encryptedMessage, String key) {
+    public AES(String key) {
+        this.key = key.getBytes();
+    }
+
+    public String decrypt(String encryptedMessage) {
         try {
-            setKey(key);
+            setKey(new String(key));
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedMessage)));
@@ -37,9 +41,9 @@ public class AES {
         }
     }
 
-    public String encrypt(String plainMessage, String key) {
+    public String encrypt(String plainMessage) {
         try {
-            setKey(key);
+            setKey(new String(key));
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             return Base64.getEncoder().encodeToString(cipher.doFinal(plainMessage.getBytes(StandardCharsets.UTF_8)));
