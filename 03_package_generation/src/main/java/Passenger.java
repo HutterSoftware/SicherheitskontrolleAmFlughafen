@@ -92,7 +92,7 @@ public class Passenger {
                 }else {
                     writer.write(plainContent[j]);
                 }
-                
+
                 writer.write('\n');
             }
 
