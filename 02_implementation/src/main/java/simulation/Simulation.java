@@ -81,37 +81,45 @@ public class Simulation {
             addEmployee(new FederalPoliceOfficer("O3", "Harry", "01.01.1969", "Officer"));
         }
 
-        public void defaultPassengers() throws IOException {
-            File passengerList = new File("passengers.txt");
-            BufferedReader reader = new BufferedReader(new FileReader(passengerList));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] passengerInformations = line.split(";");
-                Passenger passenger = new Passenger(passengerInformations[0]);
+        public void defaultPassengers()  {
+            try {
+                File passengerList = new File("./src/main/resources/passenger_baggage.txt");
+                BufferedReader reader = new BufferedReader(new FileReader(passengerList));
+                String line = reader.readLine();
+                int offset = 1;
+                while (line != null) {
+                    String[] passengerInformations = line.split(";");
+                    Passenger passenger = new Passenger(passengerInformations[0]);
 
-                List<HandBaggage> baggages = new ArrayList<>(passengerInformations.length - 1);
-                for (int i = 0; i < passengerInformations.length; i++) {
-                    String fileName = "";
-                    if (i < 10) {
-                        fileName = "00" + Integer.toString(i);
-                    } else if (i < 100) {
-                        fileName = "0" + Integer.toString(i);
-                    } else {
-                        fileName = Integer.toString(i);
+                    List<HandBaggage> baggages = new ArrayList<>(passengerInformations.length - 1);
+                    for (int i = offset; i < (offset + Integer.parseInt(passengerInformations[1])); i++) {
+                        String fileName = "./src/main/resources/";
+                        if (i < 10) {
+                            fileName += "00" + Integer.toString(i);
+                        } else if (i < 100) {
+                            fileName += "0" + Integer.toString(i);
+                        } else {
+                            fileName += Integer.toString(i);
+                        }
+                        fileName += "_baggage.txt";
+                        File baggageFile = new File(fileName);
+                        System.out.println(baggageFile.getAbsolutePath());
+                        BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
+                        Layer[] layers = new Layer[5];
+                        for (int j = 0; j < 5; j++) {
+                            String baggageLine = baggageReader.readLine();
+                            layers[j] = new Layer(baggageLine.toCharArray());
+                        }
+                        baggages.add(new HandBaggage(passenger, layers));
+                        offset++;
                     }
-                    fileName += "_baggage.txt";
-                    File baggageFile = new File(fileName);
-                    BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
-                    Layer[] layers = new Layer[5];
-                    for (int j = 0; j < 5; j++) {
-                        layers[j].setContent(baggageReader.readLine().toCharArray());
-                    }
-                    baggages.add(new HandBaggage(passenger, layers));
+
+                    passenger.setBaggages(baggages.toArray(new HandBaggage[0]));
+                    addPassenger(passenger);
+                    line = reader.readLine();
                 }
-
-                passenger.setBaggages(baggages.toArray(new HandBaggage[0]));
-                addPassenger(passenger);
-                line = reader.readLine();
+            } catch (IOException ex) {
+                // TODO: Wenn alle Pakete da sind nochmal prüfen. Es sollte dann keinen Fehler werfen.
             }
         }
 
