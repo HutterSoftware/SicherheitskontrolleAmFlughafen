@@ -81,8 +81,8 @@ public class Simulation {
             addEmployee(new FederalPoliceOfficer("O3", "Harry", "01.01.1969", "Officer"));
         }
 
-        public void defaultPassengers() throws IOException {
-            File passengerList = new File("passengers.txt");
+        public void defaultPassengers() throws IOException, URISyntaxException {
+            File passengerList = new File(getClass().getClassLoader().getResource("passenger_baggage.txt").toURI());
             BufferedReader reader = new BufferedReader(new FileReader(passengerList));
             String line = reader.readLine();
             while (line != null) {
@@ -100,7 +100,8 @@ public class Simulation {
                         fileName = Integer.toString(i);
                     }
                     fileName += "_baggage.txt";
-                    File baggageFile = new File(fileName);
+                    System.out.println(fileName);
+                    File baggageFile = new File(getClass().getClassLoader().getResource(fileName).toURI());
                     BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
                     Layer[] layers = new Layer[5];
                     for (int j = 0; j < 5; j++) {
