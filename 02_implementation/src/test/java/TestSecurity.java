@@ -58,8 +58,15 @@ public class TestSecurity {
     }
 
     @Test
-    public void weaponTest() {
+    public void weaponTest() throws IOException, URISyntaxException {
 
+        HandBaggage baggage = TestUtils.createBaggage("weapon_baggage.txt");
+
+        data.Record record = TestUtils.scanBaggage(baggage);
+        ScanResult result = record.getResult();
+
+        assertEquals("PROHIBITED", result.getItemType());
+        assertEquals("glock|7", result.getProhibitedItemType());
     }
 
     @Test
