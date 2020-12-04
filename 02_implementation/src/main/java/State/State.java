@@ -1,6 +1,11 @@
 package State;
 
 public abstract class State {
+
+    public State() {
+        System.out.println("Scan state: " + getClass().getSimpleName());
+    }
+
     public State start() {
         return null;
     }

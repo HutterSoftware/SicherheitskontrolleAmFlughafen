@@ -10,6 +10,7 @@ public class Technician extends Employee {
     }
 
     public void executeMaintenance(IBaggageScanner baggageScanner) {
-
+        baggageScanner.maintenance();
+        System.out.println("Technician: Perform maintenance");
     }
 }

@@ -14,11 +14,13 @@ public class Supervisor extends Employee {
     }
 
     public void unlockBaggageScanner(BaggageScanner baggageScanner)  {
-
+        System.out.println("Supervisor: Unlock baggage scanner");
+        enterPin(baggageScanner.getOperationStation().getReader());
     }
 
     public void switchPower(BaggageScanner baggageScanner) {
-
+        System.out.println("Supervisor: Turn baggage scanner on");
+        baggageScanner.getSupervision().pressPowerButton();
     }
 
     public boolean isSenior() {

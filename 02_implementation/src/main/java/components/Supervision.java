@@ -32,6 +32,7 @@ public class Supervision {
     public void pressPowerButton() {
         if (scanner.getCurrentState() instanceof Shutdown) {
             scanner.setCurrentState(scanner.getCurrentState().start());
+            System.out.println("Supervision: Power button pressed");
         } else {
             scanner.setCurrentState(scanner.getCurrentState().shutdown());
         }

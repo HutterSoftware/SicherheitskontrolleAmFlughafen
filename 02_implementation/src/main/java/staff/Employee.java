@@ -10,7 +10,9 @@ public class Employee {
     protected IDCard idCard;
 
     public void enterPin(CardReader reader) {
-
+        System.out.println("Employee: Type pin");
+        reader.swipeCard(idCard);
+        reader.enterPin(birthDate.split("\\.")[2]);
     }
 
     public String getId() {

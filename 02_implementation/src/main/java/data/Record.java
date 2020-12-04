@@ -1,7 +1,5 @@
 package data;
 
-import javax.naming.directory.SearchResult;
-
 public class Record {
 
     private int id;

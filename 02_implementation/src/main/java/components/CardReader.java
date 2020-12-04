@@ -51,14 +51,34 @@ public class CardReader {
             System.out.println("IDCard is locked");
         }
 
-        String stripeContent = aes.decrypt(card.getMagnetStripe());
-        byte permissions = station.getScanner().getPermissions().get(stripeContent.split("\\*\\*\\*")[1]);
-        if ((permissions & 1 << 7) != 0) {
 
+
+        if (!this.card.equals(card)) {
+            String stripeContent = aes.decrypt(card.getMagnetStripe());
+            byte permissions = station.getScanner().getPermissions().get(stripeContent.split("\\*\\*\\*")[1]);
+            if ((permissions & 1 << 7) != 0) {
+                System.out.println("Card Reader: User type is not authorized");
+            } else {
+                System.out.println("Card Reader: Enter pin");
+                countWrongInputs = 0;
+                this.card = card;
+            }
         }
     }
 
     public void enterPin(String pin) {
+        String stripeContent = aes.decrypt(card.getMagnetStripe());
 
+        if (pin.equals(stripeContent.split("\\*\\*\\*")[2])) {
+            System.out.println("Card reader: Pin accepted");
+            station.setAuthentication(stripeContent.split("\\*\\*\\*")[1]);
+        } else {
+            if (++countWrongInputs >= 3) {
+                System.out.println("Card Reader: Card is locked");
+                card.setLocked(true);
+            } else {
+                System.out.println("Card Reader: Please try again");
+            }
+        }
     }
 }

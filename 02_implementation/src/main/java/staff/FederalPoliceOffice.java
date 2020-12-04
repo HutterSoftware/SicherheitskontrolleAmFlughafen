@@ -31,6 +31,12 @@ public class FederalPoliceOffice {
     }
 
     public void takeArrestedPassengers(Passenger passenger) {
+        if (!passenger.isArrested()) {
+            arrestedPassengers.add(passenger);
+            passenger.setArrested(true);
+
+            System.out.println("Federal police office: Passenger was arrested");
+        }
         this.arrestedPassengers.add(passenger);
     }
 

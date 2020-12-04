@@ -81,6 +81,7 @@ public class Inspector extends Employee {
     }
 
     public void pushTray(BaggageScanner scanner) {
+        System.out.println("Inspector: Push tray");
         while (!scanner.getRollerConveyor().getTrayQueue().isEmpty()) {
             scanner.getRollerConveyor().pushTrays();
         }
@@ -92,6 +93,7 @@ public class Inspector extends Employee {
     }
 
     public void notifyKnife (BaggageScanner baggageScanner) {
+        System.out.println("Inspector: Notify knife");
         ManualPostControl manualPostControl = baggageScanner.getManualPostControl();
         Track[] tracks = baggageScanner.getTracks();
         manualPostControl.setCurrentTrayToInvestigate(tracks[0].getTrays().removeLast());

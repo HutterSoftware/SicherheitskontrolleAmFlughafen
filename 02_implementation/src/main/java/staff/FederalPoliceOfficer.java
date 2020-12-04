@@ -33,10 +33,10 @@ public class FederalPoliceOfficer extends Employee {
     }
 
     public void takeWeapon(String weapon) {
-
+        System.out.println("Federal police officer: Weapon was confiscated");
     }
 
     public void steerRobot(DisarmRobot robot, BaggageScanner baggageScanner) {
-
+        robot.destroyBaggage(baggageScanner.getManualPostControl().getCurrentTrayToInvestigate().takeBaggage());
     }
 }
