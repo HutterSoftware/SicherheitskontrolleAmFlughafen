@@ -20,7 +20,7 @@ public class Configuration {
         permissions.put("I", (byte) 0b00000001);
 
         key = "we2#$@a4o;";
-        matcher = (IStringMatching) new KnuthMorrisPratt();
+        matcher = new KnuthMorrisPratt();
     }
 
     public HashMap<String, Byte> getPermissions() {
