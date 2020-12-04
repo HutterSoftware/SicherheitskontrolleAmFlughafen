@@ -127,7 +127,7 @@ public class Simulation {
                     addPassenger(passenger);
                     line = reader.readLine();
                 }
-            } catch (IOException ex) {
+            } catch (IOException | URISyntaxException ex) {
                 // TODO: Wenn alle Pakete da sind nochmal prüfen. Es sollte dann keinen Fehler werfen.
             }
         }
