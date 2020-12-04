@@ -104,7 +104,7 @@ public class Simulation {
                     BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
                     Layer[] layers = new Layer[5];
                     for (int j = 0; j < 5; j++) {
-                        layers[i].setContent(baggageReader.readLine().toCharArray());
+                        layers[j] = new Layer(baggageReader.readLine().toCharArray());
                     }
                     baggages.add(new HandBaggage(passenger, layers));
                 }
