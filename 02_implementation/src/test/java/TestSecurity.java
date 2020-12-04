@@ -1,3 +1,4 @@
+import components.BaggageScanner;
 import components.Scanner;
 import components.Tray;
 import data.Record;
@@ -9,7 +10,10 @@ import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
 import staff.Employee;
+import staff.FederalPoliceOfficer;
 import staff.Inspector;
+import algorithms.AES;
+
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -24,8 +28,39 @@ public class TestSecurity {
     }
 
     @Test
-    public void employeePositionTest() {
+    public void employeePositionTest() throws IOException, URISyntaxException {
 
+        Simulation simulation = TestUtils.createSimulation();
+        BaggageScanner scanner = simulation.getScanner();
+        Configuration configuration = new Configuration();
+
+        AES aes = new AES(configuration.getKey());
+
+        Employee rollerConveyor = scanner.getRollerConveyor().getWorkingInspector();
+        String rCStripeContent = aes.decrypt(rollerConveyor.getIdCard().getMagnetStripe());
+
+        aes = new AES(configuration.getKey());
+        Employee operationStation = scanner.getOperationStation().getEmployee();
+        String oSStripeContent = aes.decrypt(operationStation.getIdCard().getMagnetStripe());
+
+        aes = new AES(configuration.getKey());
+        Employee manualPostControl = scanner.getManualPostControl().getInspector();
+        String mPCStripeContent = aes.decrypt(manualPostControl.getIdCard().getMagnetStripe());
+
+        aes = new AES(configuration.getKey());
+        Employee supervision = scanner.getSupervision().getEmployee();
+        String sStripeContent = aes.decrypt(supervision.getIdCard().getMagnetStripe());
+
+        aes = new AES(configuration.getKey());
+        Employee officer = scanner.getOfficer();
+        String oStripeContent = aes.decrypt(officer.getIdCard().getMagnetStripe());
+
+
+        assertEquals("I", rCStripeContent.split("\\*\\*\\*")[1]);
+        assertEquals("I", oSStripeContent.split("\\*\\*\\*")[1]);
+        assertEquals("I", mPCStripeContent.split("\\*\\*\\*")[1]);
+        assertEquals("S", sStripeContent.split("\\*\\*\\*")[1]);
+        assertEquals("O", oStripeContent.split("\\*\\*\\*")[1]);
     }
 
     @Test
