@@ -1,12 +1,12 @@
 package simulation;
 
+import algorithms.BoyerMoore;
 import algorithms.IStringMatching;
-import algorithms.KnuthMorrisPratt;
 
 import java.util.HashMap;
 
 public class Configuration {
-    private HashMap<String, Byte> permissions;
+    private HashMap<String, Byte> permissions = new HashMap<>();
     private IStringMatching matcher;
     private String key;
 
@@ -19,7 +19,7 @@ public class Configuration {
         permissions.put("I", (byte) 0b00000001);
 
         key = "we2#$@a4o;";
-        matcher = (IStringMatching) new KnuthMorrisPratt();
+        matcher = new BoyerMoore();
     }
 
     public HashMap<String, Byte> getPermissions() {
