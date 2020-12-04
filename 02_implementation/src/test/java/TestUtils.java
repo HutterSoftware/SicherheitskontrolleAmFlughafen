@@ -4,6 +4,7 @@ import passenger.HandBaggage;
 import passenger.Layer;
 import passenger.Passenger;
 import simulation.Configuration;
+import simulation.Simulation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,5 +44,17 @@ public class TestUtils {
         data.Record record = scanner.scan();
 
         return record;
+    }
+
+    public static Simulation createSimulation() throws IOException, URISyntaxException {
+
+        Simulation.Builder builder = new Simulation.Builder();
+
+        builder.defaultEmployees();
+//        builder.defaultPassengers();
+        Simulation simulation = builder.build();
+        simulation.initializeSimulation();
+
+        return simulation;
     }
 }
