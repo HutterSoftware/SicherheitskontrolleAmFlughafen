@@ -66,6 +66,14 @@ public class Simulation {
         employees.get("S").enterPin(scanner.getOperationStation().getReader());
     }
 
+    public Map<String, Employee> getEmployees() {
+        return employees;
+    }
+
+    public BaggageScanner getScanner() {
+        return scanner;
+    }
+
     public static class Builder {
         private List<Passenger> passengers = new LinkedList<>();
         private Map<String, Employee> employeeMap = new HashMap<>();
