@@ -70,8 +70,15 @@ public class TestSecurity {
     }
 
     @Test
-    public void explosivesTest() {
+    public void explosiveTest() throws IOException, URISyntaxException {
 
+        HandBaggage baggage = TestUtils.createBaggage("explosive_baggage.txt");
+
+        data.Record record = TestUtils.scanBaggage(baggage);
+        ScanResult result = record.getResult();
+
+        assertEquals("PROHIBITED", result.getItemType());
+        assertEquals("exp|os!ve", result.getProhibitedItemType());
     }
 
     @Test
