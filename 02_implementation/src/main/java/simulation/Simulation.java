@@ -213,5 +213,9 @@ public class Simulation {
 
             return new Simulation(baggageScanner, passengers, employeeMap, office);
         }
+
+        public Configuration getConfiguration() {
+            return configuration;
+        }
     }
 }

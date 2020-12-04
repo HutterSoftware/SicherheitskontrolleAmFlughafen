@@ -3,6 +3,7 @@ import components.Scanner;
 import components.Tray;
 import data.Record;
 import data.ScanResult;
+import org.junit.Before;
 import org.junit.Test;
 import passenger.HandBaggage;
 import passenger.Layer;
@@ -22,6 +23,20 @@ import static org.junit.Assert.assertEquals;
 
 public class TestSecurity {
 
+    private Simulation simulation;
+    private Configuration configuration;
+
+    @Before
+    public void createSimulation() {
+        Simulation.Builder builder = new Simulation.Builder();
+        this.configuration = builder.getConfiguration();
+
+        builder.defaultEmployees();
+//        builder.defaultPassengers();
+        this.simulation = builder.build();
+        this.simulation.initializeSimulation();
+    }
+
     @Test
     public void simulationTest() {
 
@@ -30,28 +45,26 @@ public class TestSecurity {
     @Test
     public void employeePositionTest() throws IOException, URISyntaxException {
 
-        Simulation simulation = TestUtils.createSimulation();
-        BaggageScanner scanner = simulation.getScanner();
-        Configuration configuration = new Configuration();
+        BaggageScanner scanner = this.simulation.getScanner();
 
-        AES aes = new AES(configuration.getKey());
+        AES aes = new AES(this.configuration.getKey());
 
         Employee rollerConveyor = scanner.getRollerConveyor().getWorkingInspector();
         String rCStripeContent = aes.decrypt(rollerConveyor.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
+        aes = new AES(this.configuration.getKey());
         Employee operationStation = scanner.getOperationStation().getEmployee();
         String oSStripeContent = aes.decrypt(operationStation.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
+        aes = new AES(this.configuration.getKey());
         Employee manualPostControl = scanner.getManualPostControl().getInspector();
         String mPCStripeContent = aes.decrypt(manualPostControl.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
+        aes = new AES(this.configuration.getKey());
         Employee supervision = scanner.getSupervision().getEmployee();
         String sStripeContent = aes.decrypt(supervision.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
+        aes = new AES(this.configuration.getKey());
         Employee officer = scanner.getOfficer();
         String oStripeContent = aes.decrypt(officer.getIdCard().getMagnetStripe());
 
@@ -66,12 +79,11 @@ public class TestSecurity {
     @Test
     public void lockIDCardTest() throws IOException, URISyntaxException {
 
-        Simulation simulation = TestUtils.createSimulation();
-        Employee inspector = simulation.getEmployees().get("I1");
+        Employee inspector = this.simulation.getEmployees().get("I1");
 
-//        for (int i = 0; i < 3; i++) {
-//            inspector.enterPin(simulation.getScanner().getOperationStation().getReader(), "wrongPin");
-//        }
+        for (int i = 0; i < 3; i++) {
+            inspector.enterPin(this.simulation.getScanner().getOperationStation().getReader(), "wrongPin");
+        }
 
 
     }
@@ -96,7 +108,9 @@ public class TestSecurity {
 
         HandBaggage baggage = TestUtils.createBaggage("knife_baggage.txt");
 
-        data.Record record = TestUtils.scanBaggage(baggage);
+        Scanner scanner = this.simulation.getScanner().getScanner();
+
+        data.Record record = TestUtils.scanBaggage(baggage, scanner);
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
@@ -108,7 +122,9 @@ public class TestSecurity {
 
         HandBaggage baggage = TestUtils.createBaggage("weapon_baggage.txt");
 
-        data.Record record = TestUtils.scanBaggage(baggage);
+        Scanner scanner = this.simulation.getScanner().getScanner();
+
+        data.Record record = TestUtils.scanBaggage(baggage, scanner);
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
@@ -120,7 +136,9 @@ public class TestSecurity {
 
         HandBaggage baggage = TestUtils.createBaggage("explosive_baggage.txt");
 
-        data.Record record = TestUtils.scanBaggage(baggage);
+        Scanner scanner = this.simulation.getScanner().getScanner();
+
+        data.Record record = TestUtils.scanBaggage(baggage, scanner);
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
