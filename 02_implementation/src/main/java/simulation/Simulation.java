@@ -169,7 +169,8 @@ public class Simulation {
                String stripe = "***" + profileType + "***" + pin + "***";
                AES encryption = new AES(configuration.getKey());
                stripe = encryption.encrypt(stripe);
-                IDCard idCard = new IDCard(employee.getId().hashCode(), Instant.ofEpochMilli(1607023620008L), stripe, cardType, false);
+               IDCard idCard = new IDCard(employee.getId().hashCode(), Instant.ofEpochMilli(1607023620008L), stripe, cardType, false);
+               employee.setIdCard(idCard);
             });
 
             employeeMap.values().stream().filter(employee -> employee instanceof FederalPoliceOfficer).

@@ -37,4 +37,8 @@ public class Employee {
     public IDCard getIdCard() {
         return this.idCard;
     }
+
+    public void setIdCard(IDCard idCard) {
+        this.idCard = idCard;
+    }
 }
