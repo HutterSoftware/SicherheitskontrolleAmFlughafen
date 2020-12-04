@@ -11,6 +11,7 @@ public class Configuration {
     private String key;
 
     public Configuration() {
+        permissions = new HashMap<>();
         // Permissions of different user types
         permissions.put("K", (byte) 0b00001000);
         permissions.put("O", (byte) 0b00001000);
