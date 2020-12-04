@@ -11,6 +11,7 @@ import passenger.Passenger;
 import staff.*;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.*;
 import java.util.List;
@@ -65,6 +66,14 @@ public class Simulation {
         employees.get("S").enterPin(scanner.getOperationStation().getReader());
     }
 
+    public Map<String, Employee> getEmployees() {
+        return employees;
+    }
+
+    public BaggageScanner getScanner() {
+        return scanner;
+    }
+
     public static class Builder {
         private List<Passenger> passengers = new LinkedList<>();
         private Map<String, Employee> employeeMap = new HashMap<>();
@@ -80,10 +89,10 @@ public class Simulation {
             addEmployee(new FederalPoliceOfficer("O2", "Toto", "01.01.1969", "Officer"));
             addEmployee(new FederalPoliceOfficer("O3", "Harry", "01.01.1969", "Officer"));
         }
-
+      
         public void defaultPassengers()  {
             try {
-                File passengerList = new File("./src/main/resources/passenger_baggage.txt");
+                File passengerList = new File(getClass().getClassLoader().getResource("passenger_baggage.txt").toURI());
                 BufferedReader reader = new BufferedReader(new FileReader(passengerList));
                 String line = reader.readLine();
                 int offset = 1;
@@ -102,7 +111,7 @@ public class Simulation {
                             fileName += Integer.toString(i);
                         }
                         fileName += "_baggage.txt";
-                        File baggageFile = new File(fileName);
+                        File baggageFile = new File(getClass().getClassLoader().getResource(fileName).toURI());
                         System.out.println(baggageFile.getAbsolutePath());
                         BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
                         Layer[] layers = new Layer[5];
@@ -167,7 +176,8 @@ public class Simulation {
                String stripe = "***" + profileType + "***" + pin + "***";
                AES encryption = new AES(configuration.getKey());
                stripe = encryption.encrypt(stripe);
-                IDCard idCard = new IDCard(employee.getId().hashCode(), Instant.ofEpochMilli(1607023620008L), stripe, cardType, false);
+               IDCard idCard = new IDCard(employee.getId().hashCode(), Instant.ofEpochMilli(1607023620008L), stripe, cardType, false);
+               employee.setIdCard(idCard);
             });
 
             employeeMap.values().stream().filter(employee -> employee instanceof FederalPoliceOfficer).

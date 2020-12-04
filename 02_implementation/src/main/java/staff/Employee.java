@@ -15,6 +15,13 @@ public class Employee {
         reader.enterPin(birthDate.split("\\.")[2]);
     }
 
+    public void enterPin(CardReader reader, String pin) {
+        System.out.println("Employee: Type pin");
+        System.out.println(idCard.getId());
+        reader.swipeCard(idCard);
+        reader.enterPin(pin);
+    }
+
     public String getId() {
         return this.id;
     }
@@ -29,5 +36,9 @@ public class Employee {
 
     public IDCard getIdCard() {
         return this.idCard;
+    }
+
+    public void setIdCard(IDCard idCard) {
+        this.idCard = idCard;
     }
 }
