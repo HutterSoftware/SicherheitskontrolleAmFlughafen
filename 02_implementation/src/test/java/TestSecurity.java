@@ -7,6 +7,9 @@ import passenger.HandBaggage;
 import passenger.Layer;
 import passenger.Passenger;
 import simulation.Configuration;
+import simulation.Simulation;
+import staff.Employee;
+import staff.Inspector;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -26,7 +29,15 @@ public class TestSecurity {
     }
 
     @Test
-    public void cancelIDCardTest() {
+    public void lockIDCardTest() throws IOException, URISyntaxException {
+
+        Simulation simulation = TestUtils.createSimulation();
+        Employee inspector = simulation.getEmployees().get("I1");
+
+//        for (int i = 0; i < 3; i++) {
+//            inspector.enterPin(simulation.getScanner().getOperationStation().getReader(), "wrongPin");
+//        }
+
 
     }
 
