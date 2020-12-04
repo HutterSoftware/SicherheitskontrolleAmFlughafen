@@ -26,35 +26,16 @@ public class TestUtils {
             char[] line = baggageReader.readLine().toCharArray();
             layers[j] = new Layer(line);
         }
-        HandBaggage baggage = new HandBaggage(passenger, layers);
 
-        return baggage;
+        return new HandBaggage(passenger, layers);
     }
 
-    public static data.Record scanBaggage(HandBaggage baggage) {
-
-        Configuration configuration = new Configuration();
-        Scanner scanner = new Scanner(configuration.getSearchAlgorithm());
+    public static data.Record scanBaggage(HandBaggage baggage, Scanner scanner) {
 
         Tray tray = new Tray();
         tray.insertBaggage(baggage);
-
         scanner.move(tray);
 
-        data.Record record = scanner.scan();
-
-        return record;
-    }
-
-    public static Simulation createSimulation() throws IOException, URISyntaxException {
-
-        Simulation.Builder builder = new Simulation.Builder();
-
-        builder.defaultEmployees();
-//        builder.defaultPassengers();
-        Simulation simulation = builder.build();
-        simulation.initializeSimulation();
-
-        return simulation;
+        return scanner.scan();
     }
 }
