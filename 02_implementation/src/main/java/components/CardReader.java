@@ -57,7 +57,7 @@ public class CardReader {
             System.out.println("Card Reader: User type is not authorized");
         } else {
             System.out.println("Card Reader: Enter pin");
-            countWrongInputs = 0;
+            if (this.card != card) countWrongInputs = 0;
             this.card = card;
         }
     }
