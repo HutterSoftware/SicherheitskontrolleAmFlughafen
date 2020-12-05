@@ -3,10 +3,10 @@ package components;
 import passenger.HandBaggage;
 
 public interface IBaggageScanner {
-    public void scanHandBaggage();
-    public void moveBeltForward();
-    public void moveBeltBackwards();
-    public void alarm();
-    public void report();
-    public void maintenance();
+    public boolean scanHandBaggage();
+    public boolean moveBeltForward();
+    public boolean moveBeltBackwards();
+    public boolean alarm();
+    public boolean report();
+    public boolean maintenance();
 }
