@@ -19,7 +19,7 @@ import algorithms.AES;
 import java.io.*;
 import java.net.URISyntaxException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TestSecurity {
 
@@ -81,7 +81,7 @@ public class TestSecurity {
             inspector.enterPin(this.simulation.getScanner().getOperationStation().getReader(), "wrongPin");
         }
 
-
+        assertTrue(inspector.getIdCard().isLocked());
     }
 
     @Test
