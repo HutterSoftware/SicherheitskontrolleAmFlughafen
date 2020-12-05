@@ -70,6 +70,10 @@ public class Simulation {
         return employees;
     }
 
+    public List<Passenger> getPassengerList() {
+        return passengerList;
+    }
+
     public BaggageScanner getScanner() {
         return scanner;
     }
