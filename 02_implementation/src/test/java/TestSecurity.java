@@ -1,24 +1,28 @@
 import algorithms.AES;
+
 import components.BaggageScanner;
 import components.Scanner;
-import components.Tray;
+
 import data.ScanResult;
+
+import passenger.HandBaggage;
+
+import passenger.Passenger;
+import simulation.Configuration;
+import simulation.Simulation;
+
+import staff.Employee;
+import staff.Supervisor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import passenger.HandBaggage;
-import passenger.Passenger;
-import simulation.Configuration;
-import simulation.Simulation;
-import staff.Employee;
-import staff.Inspector;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.*;
+import java.net.URISyntaxException;
 
 public class TestSecurity {
 
@@ -37,9 +41,48 @@ public class TestSecurity {
     }
 
     @ParameterizedTest()
-    @CsvFileSource(resources = "passenger_baggage.txt", delimiter = ';')
-    public void simulationTest(String name, int numberOfBaggages, String prohibitedItems) {
+    @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
+    public void simulationTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
 
+        Passenger passenger = this.simulation.getPassengerList().get(passengerIndex);
+
+        assertEquals(name, passenger.getName());
+        assertEquals(numberOfBaggages, passenger.getBaggages().length);
+
+        for (int i = 0; i < numberOfBaggages; i++) {
+System.out.println(name + " " + i);
+            HandBaggage baggage = passenger.getBaggages()[i];
+            String test = new String(baggage.getLayers()[4].getContent());
+            System.out.println(test.contains("glock|7"));
+            data.Record record = TestUtils.scanBaggage(baggage, this.simulation.getScanner().getScanner());
+
+            String pItem1 = TestUtils.getProhibitedItemString(prohibitedItem1);
+            String[] prohibitedItemInformation1 = pItem1.split(",");
+
+            String pItem2 = TestUtils.getProhibitedItemString(prohibitedItem2);
+            String[] prohibitedItemInformation2 = pItem2.split(",");
+
+            if (!prohibitedItem1.equals("-") && Integer.parseInt(prohibitedItemInformation1[1]) - 1 == i) {
+
+                char prohibitedItemType = Character.toUpperCase(record.getResult().getProhibitedItemType().charAt(0));
+                if (prohibitedItemType == 'G') prohibitedItemType = 'W';
+
+                assertEquals("PROHIBITED", record.getResult().getItemType());
+                assertEquals(prohibitedItemInformation1[0].charAt(0), prohibitedItemType);
+
+            } else if (!prohibitedItem2.equals("-") && Integer.parseInt(prohibitedItemInformation2[1]) - 1 == i) {
+
+                char prohibitedItemType = Character.toUpperCase(record.getResult().getProhibitedItemType().charAt(0));
+                if (prohibitedItemType == 'G') prohibitedItemType = 'W';
+
+                assertEquals("PROHIBITED", record.getResult().getItemType());
+                assertEquals(prohibitedItemInformation2[0].charAt(0), prohibitedItemType);
+
+            } else {
+
+                assertEquals("CLEAN", record.getResult().getItemType());
+            }
+        }
     }
 
     @Test
@@ -103,7 +146,7 @@ public class TestSecurity {
     }
 
     @Test
-    public void employeeProfileTest() throws IOException, URISyntaxException {
+    public void employeeProfileTest() {
 
         BaggageScanner scanner = simulation.getScanner();
         scanner.getSupervision().pressPowerButton();
@@ -146,6 +189,27 @@ public class TestSecurity {
     @Test
     public void unlockScannerTest() {
 
+        BaggageScanner scanner = simulation.getScanner();
+
+        scanner.getSupervision().pressPowerButton();
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+        scanner.setCurrentState(scanner.getCurrentState().lock());
+
+
+        System.out.println("\nInspector");
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+        assertEquals("Locked", scanner.getCurrentState().getClass().getSimpleName());
+
+
+        System.out.println("\nTechnician");
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("T"));
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+        assertEquals("Locked", scanner.getCurrentState().getClass().getSimpleName());
+
+
+        System.out.println("\nSupervisor");
+        ((Supervisor)simulation.getEmployees().get("S")).unlockBaggageScanner(scanner);
+        assertEquals("Activated", scanner.getCurrentState().getClass().getSimpleName());
     }
 
     @Test

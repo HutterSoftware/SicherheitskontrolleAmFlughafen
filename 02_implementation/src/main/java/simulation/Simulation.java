@@ -106,18 +106,18 @@ public class Simulation {
                     Passenger passenger = new Passenger(passengerInformations[0]);
 
                     List<HandBaggage> baggages = new ArrayList<>(passengerInformations.length - 1);
-                    for (int i = offset; i < (offset + Integer.parseInt(passengerInformations[1])); i++) {
+                    for (int i = 0; i < Integer.parseInt(passengerInformations[1]); i++) {
                         String fileName = "./src/main/resources/";
-                        if (i < 10) {
-                            fileName += "00" + Integer.toString(i);
-                        } else if (i < 100) {
-                            fileName += "0" + Integer.toString(i);
+                        if (offset < 10) {
+                            fileName += "00" + Integer.toString(offset);
+                        } else if (offset < 100) {
+                            fileName += "0" + Integer.toString(offset);
                         } else {
-                            fileName += Integer.toString(i);
+                            fileName += Integer.toString(offset);
                         }
                         fileName += "_baggage.txt";
                         File baggageFile = new File(fileName);
-                        System.out.println(baggageFile.getAbsolutePath());
+                        //System.out.println(baggageFile.getAbsolutePath());
                         BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
                         Layer[] layers = new Layer[5];
                         for (int j = 0; j < 5; j++) {

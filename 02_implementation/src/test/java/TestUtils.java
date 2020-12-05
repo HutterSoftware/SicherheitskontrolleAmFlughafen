@@ -38,4 +38,15 @@ public class TestUtils {
 
         return scanner.scan();
     }
+
+    public static String getProhibitedItemString (String prohibited) {
+        String prohibitedItem = "";
+        if (prohibited.contains("[")) {
+            prohibitedItem = prohibited.split("\\[")[1];
+        } else {
+            prohibitedItem = prohibited;
+        }
+        prohibitedItem = prohibitedItem.split("]")[0];
+        return prohibitedItem;
+    }
 }
