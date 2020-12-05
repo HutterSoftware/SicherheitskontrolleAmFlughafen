@@ -11,6 +11,10 @@ public class Passenger {
     private int countOfPackages = 0;
     private List<ProhibitedItem> listOfProhibitedItems = new ArrayList();
 
+    public int getCountOfPackages() {
+        return countOfPackages;
+    }
+
     public Passenger(String passengerLine) {
         String[] itemSplit = passengerLine.split(";");
         this.name = itemSplit[0];
@@ -28,7 +32,7 @@ public class Passenger {
         }
     }
 
-    public int  toFile(int packageId) throws IOException, InterruptedException {
+    public void createBaggage(String name, List<Baggage> baggageList) throws IOException, InterruptedException {
         char[] validCharacters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
                 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
                 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6',
@@ -44,22 +48,15 @@ public class Passenger {
 
         for (int i = 0; i < this.countOfPackages; i++) {
             int prohibitedItemCounter = 0;
-            String baggageName = "./src/main/resources/";
-            if (packageId < 10) {
-                baggageName = "00" + Integer.toString(packageId);
-            } else if (packageId < 100) {
-                baggageName = "0" + Integer.toString(packageId);
-            } else {
-                baggageName = Integer.toString(packageId);
-            }
-            baggageName += "_baggage.txt";
+            Baggage baggage = new Baggage(PackageGeneration.getId());
+            PackageGeneration.incrementId();
 
-            FileWriter writer = new FileWriter(baggageName);
-
+            //System.out.println(baggageName + " " + name);
             for (int j = 0; j < 5; j++) {
+                String layer = "";
                 if (prohibitedItemCounter < listOfProhibitedItems.size()) {
                     if (listOfProhibitedItems.get(prohibitedItemCounter).getInPackage() == i + 1 &&
-                        listOfProhibitedItems.get(prohibitedItemCounter).getInLayer() == j + 1) {
+                            listOfProhibitedItems.get(prohibitedItemCounter).getInLayer() == j + 1) {
                         char[] modified = plainContent[j];
                         int itemLength = 0;
                         String item = "";
@@ -84,22 +81,26 @@ public class Passenger {
                         for (int k = startIndex; k < startIndex + itemLength; k++) {
                             modified[k] = item.charAt(k - startIndex);
                         }
-                        writer.write(modified);
+                        layer = new String(modified);
+                        //writer.write(modified);
                         prohibitedItemCounter++;
                     } else {
-                        writer.write(plainContent[j]);
+                        layer = new String(plainContent[j]);
+                        //writer.write(plainContent[j]);
                     }
-                }else {
-                    writer.write(plainContent[j]);
+                } else {
+                    layer = new String(plainContent[j]);
+                    //writer.write(plainContent[j]);
                 }
 
-                writer.write('\n');
+                layer += "\n";
+                baggage.addLayer(layer);
             }
-
-            writer.close();
-            packageId++;
+            baggageList.add(baggage);
         }
+    }
 
-        return packageId;
+    public String getName() {
+        return name;
     }
 }
