@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class OperationStation {
 
     private BaggageScanner scanner;
-    private String authentication;
+    private String authentication = "";
     private Employee employee;
     private CardReader reader;
     private Button[] buttons;
