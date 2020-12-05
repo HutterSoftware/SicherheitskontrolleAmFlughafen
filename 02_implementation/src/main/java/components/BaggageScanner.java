@@ -35,26 +35,28 @@ public class BaggageScanner implements  IBaggageScanner{
     }
 
     @Override
-    public void scanHandBaggage() {
+    public boolean scanHandBaggage() {
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
         if ((value & 1) == 0) {
             System.out.println("Unauthorized usage");
-            return;
+            return false;
         }
 
         currentState = currentState.scan();
         scanResults.add(scanner.scan());
         currentState = currentState.scanDone();
+
+        return true;
     }
 
     @Override
-    public void moveBeltForward() {
+    public boolean moveBeltForward() {
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
         if ((value & 1) == 0) {
             System.out.println("Unauthorized usage");
-            return;
+            return false;
         }
 
         System.out.println("Move Belt forward");
@@ -69,15 +71,17 @@ public class BaggageScanner implements  IBaggageScanner{
                 tracks[0].trayArrive(tray);
             }
         }
+
+        return true;
     }
 
     @Override
-    public void moveBeltBackwards() {
+    public boolean moveBeltBackwards() {
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
         if ((value & 1) == 0) {
             System.out.println("Unauthorized usage");
-            return;
+            return false;
         }
 
         Tray tray = tracks[0].getTrays().getLast();
@@ -85,15 +89,17 @@ public class BaggageScanner implements  IBaggageScanner{
         if (tray != null) {
             belt.moveBackwards(tray);
         }
+
+        return true;
     }
 
     @Override
-    public void alarm() {
+    public boolean alarm() {
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
         if ((value & 1 << 1) == 0) {
             System.out.println("Unauthorized usage");
-            return;
+            return false;
         }
 
         System.out.println("Alert!!! Prohibited items in the baggage");
@@ -114,15 +120,17 @@ public class BaggageScanner implements  IBaggageScanner{
         for (int i = 0; i < inforcement.length; i++) {
             manualPostControl.getCurrentOfficer()[i+1] = inforcement[i];
         }
+
+        return true;
     }
 
     @Override
-    public void report() {
+    public boolean report() {
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
         if ((value & 1 << 2) == 0) {
             System.out.println("Unauthorized usage");
-            return;
+            return false;
         }
 
         System.out.println();
@@ -133,20 +141,24 @@ public class BaggageScanner implements  IBaggageScanner{
             System.out.println("Report: Scan result: " + x.toString());
         });
         System.out.println("Report End");
+
+        return true;
     }
 
     @Override
-    public void maintenance() {
+    public boolean maintenance() {
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
         if ((value & 1 << 3) == 0) {
             System.out.println("Unauthorized usage");
-            return;
+            return false;
         }
 
         System.out.println("Perform maintenance");
 
         currentState.scansDone();
+
+        return true;
     }
 
     public Track[] getTracks() {
