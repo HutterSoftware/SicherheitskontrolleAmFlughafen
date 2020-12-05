@@ -3,8 +3,8 @@ import components.Scanner;
 import components.Tray;
 import data.Record;
 import data.ScanResult;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import passenger.HandBaggage;
 import passenger.Layer;
 import passenger.Passenger;
@@ -19,14 +19,16 @@ import algorithms.AES;
 import java.io.*;
 import java.net.URISyntaxException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class TestSecurity {
 
     private Simulation simulation;
     private Configuration configuration;
 
-    @Before
+    @BeforeEach
     public void createSimulation() {
         Simulation.Builder builder = new Simulation.Builder();
         this.configuration = builder.getConfiguration();
