@@ -111,36 +111,36 @@ public class TestSecurity {
         System.out.println("\nInspector");
         scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
 
-        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
-        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
-        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
-        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
+        assertTrue(scanner.checkPermissions("moveForward"));
+        assertTrue(scanner.checkPermissions("moveBackward"));
+        assertTrue(scanner.checkPermissions("scan"));
+        assertTrue(scanner.checkPermissions("alarm"));
+        assertFalse(scanner.checkPermissions("report"));
+        assertFalse(scanner.checkPermissions("maintenance"));
 
 
         System.out.println("\nSupervisor");
         scanner.getOperationStation().setEmployee(simulation.getEmployees().get("S"));
         scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
 
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
-//        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
+        assertFalse(scanner.checkPermissions("moveForward"));
+        assertFalse(scanner.checkPermissions("moveBackward"));
+        assertFalse(scanner.checkPermissions("scan"));
+        assertFalse(scanner.checkPermissions("alarm"));
+        assertTrue(scanner.checkPermissions("report"));
+        assertFalse(scanner.checkPermissions("maintenance"));
 
 
         System.out.println("\nMaintenance");
-        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("S"));
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("T"));
         scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
 
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
-        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
-//        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
+        assertFalse(scanner.checkPermissions("moveForward"));
+        assertFalse(scanner.checkPermissions("moveBackward"));
+        assertFalse(scanner.checkPermissions("scan"));
+        assertFalse(scanner.checkPermissions("alarm"));
+        assertFalse(scanner.checkPermissions("report"));
+        assertTrue(scanner.checkPermissions("maintenance"));
     }
 
     @Test

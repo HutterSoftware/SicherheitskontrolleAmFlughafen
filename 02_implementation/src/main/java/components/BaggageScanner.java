@@ -3,6 +3,7 @@ package components;
 import State.State;
 import data.Record;
 import passenger.Passenger;
+import simulation.Configuration;
 import staff.FederalPoliceOfficer;
 
 import java.util.HashMap;
@@ -134,11 +135,42 @@ public class BaggageScanner implements  IBaggageScanner{
 
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
+
         if ((value & 1 << shift) == 0) {
             System.out.println("Unauthorized usage");
             return false;
         }
         return true;
+    }
+
+    public boolean checkPermissions(String activity) {
+        String auth = operationStation.getUserType();
+        switch(auth) {
+            case "S":
+                switch (activity) {
+                    case "report":
+                        return true;
+                }
+                break;
+
+            case "T":
+                switch (activity) {
+                    case "maintenance":
+                        return true;
+                }
+                break;
+
+            case "I":
+                switch (activity) {
+                    case "moveForward":
+                    case "moveBackward":
+                    case "scan":
+                    case "alarm":
+                        return true;
+                }
+                break;
+        }
+        return false;
     }
 
     public Track[] getTracks() {
