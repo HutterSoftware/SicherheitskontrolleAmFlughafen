@@ -41,7 +41,7 @@ public class TestSecurity {
     }
 
     @Test
-    public void employeePositionTest() throws IOException, URISyntaxException {
+    public void employeePositionTest() {
 
         BaggageScanner scanner = this.simulation.getScanner();
 
@@ -75,7 +75,7 @@ public class TestSecurity {
     }
 
     @Test
-    public void lockIDCardTest() throws IOException, URISyntaxException {
+    public void lockIDCardTest() {
 
         Employee inspector = this.simulation.getEmployees().get("I1");
 
