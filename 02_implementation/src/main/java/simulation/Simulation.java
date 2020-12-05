@@ -107,7 +107,7 @@ public class Simulation {
 
                     List<HandBaggage> baggages = new ArrayList<>(passengerInformations.length - 1);
                     for (int i = offset; i < (offset + Integer.parseInt(passengerInformations[1])); i++) {
-                        String fileName = "";
+                        String fileName = "./src/main/resources/";
                         if (i < 10) {
                             fileName += "00" + Integer.toString(i);
                         } else if (i < 100) {
@@ -116,7 +116,7 @@ public class Simulation {
                             fileName += Integer.toString(i);
                         }
                         fileName += "_baggage.txt";
-                        File baggageFile = new File(getClass().getClassLoader().getResource(fileName).toURI());
+                        File baggageFile = new File(fileName);
                         System.out.println(baggageFile.getAbsolutePath());
                         BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
                         Layer[] layers = new Layer[5];

@@ -31,7 +31,7 @@ public class TestSecurity {
         this.configuration = builder.getConfiguration();
 
         builder.defaultEmployees();
-//        builder.defaultPassengers();
+        builder.defaultPassengers();
         this.simulation = builder.build();
         this.simulation.initializeSimulation();
     }
