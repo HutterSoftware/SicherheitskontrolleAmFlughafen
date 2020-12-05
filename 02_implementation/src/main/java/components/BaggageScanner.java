@@ -34,7 +34,7 @@ public class BaggageScanner implements  IBaggageScanner{
         permissionShift.put("scan", 0);
         permissionShift.put("moveForward", 0);
         permissionShift.put("moveBackward", 0);
-        permissionShift.put("alarm", 1);
+        permissionShift.put("alarm", 0);
         permissionShift.put("report", 2);
         permissionShift.put("maintenance", 3);
     }
@@ -66,7 +66,6 @@ public class BaggageScanner implements  IBaggageScanner{
                 tracks[0].trayArrive(tray);
             }
         }
-        return;
     }
 
     @Override
