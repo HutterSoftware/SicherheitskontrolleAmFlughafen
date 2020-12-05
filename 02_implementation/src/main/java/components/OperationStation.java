@@ -4,12 +4,10 @@ import State.Deactivated;
 import State.Locked;
 import staff.Employee;
 
-import java.time.LocalDateTime;
-
 public class OperationStation {
 
     private BaggageScanner scanner;
-    private String authentication;
+    private String authentication = "";
     private Employee employee;
     private CardReader reader;
     private Button[] buttons;
@@ -75,5 +73,15 @@ public class OperationStation {
 
     public void setUserType(String userType) {
         this.userType = userType;
+
+        if (scanner.getCurrentState() instanceof Deactivated) {
+            scanner.setCurrentState(scanner.getCurrentState().authenticated());
+            System.out.println("Acivate scanner");
+        }
+
+        if (scanner.getCurrentState() instanceof Locked && userType.equals("S")) {
+            scanner.setCurrentState(scanner.getCurrentState().unlock());
+            System.out.println("Unlock scanner");
+        }
     }
 }

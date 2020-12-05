@@ -10,9 +10,10 @@ public class Employee {
     protected IDCard idCard;
 
     public void enterPin(CardReader reader) {
-        System.out.println("Employee: Type pin");
-        reader.swipeCard(idCard);
-        reader.enterPin(birthDate.split("\\.")[2]);
+        if (reader.swipeCard(idCard)){
+            System.out.println("Employee: Type pin");
+            reader.enterPin(birthDate.split("\\.")[2]);
+        }
     }
 
     public void enterPin(CardReader reader, String pin) {

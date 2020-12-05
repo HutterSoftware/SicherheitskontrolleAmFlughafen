@@ -2,15 +2,12 @@ package staff;
 
 import State.Locked;
 import components.*;
-import components.Button;
 import data.Record;
 import data.ScanResult;
 import explosivedevicecomponents.TestStrip;
 import passenger.HandBaggage;
 import passenger.Passenger;
 
-import java.awt.*;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

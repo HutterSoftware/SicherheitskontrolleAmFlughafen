@@ -1,24 +1,17 @@
+import algorithms.AES;
 import components.BaggageScanner;
 import components.Scanner;
-import components.Tray;
-import data.Record;
 import data.ScanResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import passenger.HandBaggage;
-import passenger.Layer;
-import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
 import staff.Employee;
-import staff.FederalPoliceOfficer;
-import staff.Inspector;
-import algorithms.AES;
 
-
-import java.io.*;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
