@@ -1,21 +1,23 @@
 import algorithms.AES;
 import components.BaggageScanner;
 import components.Scanner;
+import components.Tray;
 import data.ScanResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import passenger.HandBaggage;
+import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
 import staff.Employee;
+import staff.Inspector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestSecurity {
@@ -101,15 +103,44 @@ public class TestSecurity {
     }
 
     @Test
-    public void employeeProfileTest() {
+    public void employeeProfileTest() throws IOException, URISyntaxException {
 
         BaggageScanner scanner = simulation.getScanner();
-
         scanner.getSupervision().pressPowerButton();
+
+        System.out.println("\nInspector");
         scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
 
-        assertTrue(scanner.moveBeltForward());
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
 
+
+        System.out.println("\nSupervisor");
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("S"));
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
+//        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
+
+
+        System.out.println("\nMaintenance");
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("S"));
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
+//        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
     }
 
     @Test
