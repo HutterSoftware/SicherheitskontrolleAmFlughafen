@@ -1,27 +1,27 @@
-import State.State;
-import State.Locked;
 import algorithms.AES;
+
 import components.BaggageScanner;
 import components.Scanner;
-import components.Tray;
+
 import data.ScanResult;
+
+import passenger.HandBaggage;
+
+import simulation.Configuration;
+import simulation.Simulation;
+
+import staff.Employee;
+import staff.Supervisor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import passenger.HandBaggage;
-import passenger.Passenger;
-import simulation.Configuration;
-import simulation.Simulation;
-import staff.Employee;
-import staff.Inspector;
-import staff.Supervisor;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class TestSecurity {
 
