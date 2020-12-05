@@ -1,21 +1,23 @@
 import algorithms.AES;
 import components.BaggageScanner;
 import components.Scanner;
+import components.Tray;
 import data.ScanResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import passenger.HandBaggage;
+import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
 import staff.Employee;
+import staff.Inspector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestSecurity {
@@ -41,7 +43,7 @@ public class TestSecurity {
     }
 
     @Test
-    public void employeePositionTest() throws IOException, URISyntaxException {
+    public void employeePositionTest() {
 
         BaggageScanner scanner = this.simulation.getScanner();
 
@@ -75,7 +77,7 @@ public class TestSecurity {
     }
 
     @Test
-    public void lockIDCardTest() throws IOException, URISyntaxException {
+    public void lockIDCardTest() {
 
         Employee inspector = this.simulation.getEmployees().get("I1");
 
@@ -92,21 +94,53 @@ public class TestSecurity {
         Employee officer = this.simulation.getEmployees().get("O1");
         officer.enterPin(this.simulation.getScanner().getOperationStation().getReader());
 
-        System.out.println(simulation.getScanner().getOperationStation().getAuthentication());
+        assertEquals("", simulation.getScanner().getOperationStation().getAuthentication());
+
+        Employee houseKeeping = this.simulation.getEmployees().get("K");
+        houseKeeping.enterPin(this.simulation.getScanner().getOperationStation().getReader());
 
         assertEquals("", simulation.getScanner().getOperationStation().getAuthentication());
     }
 
     @Test
-    public void employeeProfileTest() {
+    public void employeeProfileTest() throws IOException, URISyntaxException {
 
         BaggageScanner scanner = simulation.getScanner();
-
         scanner.getSupervision().pressPowerButton();
+
+        System.out.println("\nInspector");
         scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
 
-        assertTrue(scanner.moveBeltForward());
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
+        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
 
+
+        System.out.println("\nSupervisor");
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("S"));
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
+//        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
+
+
+        System.out.println("\nMaintenance");
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("S"));
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveForward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("moveBackward")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("scan")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("alarm")));
+        assertFalse(scanner.checkPermissions(scanner.getPermissionShift().get("report")));
+//        assertTrue(scanner.checkPermissions(scanner.getPermissionShift().get("maintenance")));
     }
 
     @Test
