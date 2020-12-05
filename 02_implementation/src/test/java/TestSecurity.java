@@ -3,6 +3,7 @@ import components.Scanner;
 import components.Tray;
 import data.Record;
 import data.ScanResult;
+import org.junit.Before;
 import org.junit.Test;
 import passenger.HandBaggage;
 import passenger.Layer;
