@@ -23,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TestSecurity {
 
@@ -254,9 +256,39 @@ System.out.println(name + " " + i);
         assertEquals("exp|os!ve", result.getProhibitedItemType());
     }
 
-    @Test
-    public void scanRecordTest() {
+    @ParameterizedTest()
+    @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
+    public void scanRecordTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
 
+        Passenger passenger = this.simulation.getPassengerList().get(passengerIndex);
+
+        assertEquals(name, passenger.getName());
+        assertEquals(numberOfBaggages, passenger.getBaggages().length);
+
+        for (int i = 0; i < numberOfBaggages; i++) {
+
+            HandBaggage baggage = passenger.getBaggages()[i];
+            data.Record record = TestUtils.scanBaggage(baggage, this.simulation.getScanner().getScanner());
+
+            assertNotNull(record.getTimestamp());
+            assertNotNull(record.getResult());
+
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss,SSS");
+//            LocalDateTime now = LocalDateTime.now();
+//            LocalDateTime before10min = now.minusMinutes(10);
+//            LocalDateTime scan = LocalDateTime.parse(record.getTimestamp(), formatter);
+//
+//            assertTrue(scan.isAfter(before10min));
+//            assertTrue(scan.isBefore(now));
+
+
+            assertNotNull(record.getResult().getItemType());
+
+            if (record.getResult().getItemType().equals("PROHIBITED")) {
+
+                assertNotNull(record.getResult().getProhibitedItemType());
+            }
+        }
     }
 
     @Test
