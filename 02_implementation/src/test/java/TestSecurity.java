@@ -1,3 +1,5 @@
+import State.State;
+import State.Locked;
 import algorithms.AES;
 import components.BaggageScanner;
 import components.Scanner;
@@ -13,6 +15,7 @@ import simulation.Configuration;
 import simulation.Simulation;
 import staff.Employee;
 import staff.Inspector;
+import staff.Supervisor;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -146,6 +149,27 @@ public class TestSecurity {
     @Test
     public void unlockScannerTest() {
 
+        BaggageScanner scanner = simulation.getScanner();
+
+        scanner.getSupervision().pressPowerButton();
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+        scanner.setCurrentState(scanner.getCurrentState().lock());
+
+
+        System.out.println("\nInspector");
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+        assertEquals("Locked", scanner.getCurrentState().getClass().getSimpleName());
+
+
+        System.out.println("\nTechnician");
+        scanner.getOperationStation().setEmployee(simulation.getEmployees().get("T"));
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+        assertEquals("Locked", scanner.getCurrentState().getClass().getSimpleName());
+
+
+        System.out.println("\nSupervisor");
+        ((Supervisor)simulation.getEmployees().get("S")).unlockBaggageScanner(scanner);
+        assertEquals("Activated", scanner.getCurrentState().getClass().getSimpleName());
     }
 
     @Test
