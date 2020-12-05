@@ -7,6 +7,7 @@ import staff.FederalPoliceOfficer;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class BaggageScanner implements  IBaggageScanner{
 
@@ -25,34 +26,33 @@ public class BaggageScanner implements  IBaggageScanner{
     private Track[] tracks;
     private Supervision supervision;
 
+    private Map<String, Integer> permissionShift = new HashMap<>();
+
     public BaggageScanner(HashMap<String, Byte> permissions) {
         this.permissions = permissions;
+
+        permissionShift.put("scan", 0);
+        permissionShift.put("moveForward", 0);
+        permissionShift.put("moveBackward", 0);
+        permissionShift.put("alarm", 1);
+        permissionShift.put("report", 2);
+        permissionShift.put("maintenance", 3);
     }
 
     @Override
-    public boolean scanHandBaggage() {
-        String auth = operationStation.getUserType();
-        byte value = permissions.get(auth);
-        if ((value & 1) == 0) {
-            System.out.println("Unauthorized usage");
-            return false;
-        }
+    public void scanHandBaggage() {
+
+        if (!checkPermissions(permissionShift.get("scan"))) return;
 
         currentState = currentState.scan();
         scanResults.add(scanner.scan());
         currentState = currentState.scanDone();
-
-        return true;
     }
 
     @Override
-    public boolean moveBeltForward() {
-        String auth = operationStation.getUserType();
-        byte value = permissions.get(auth);
-        if ((value & 1) == 0) {
-            System.out.println("Unauthorized usage");
-            return false;
-        }
+    public void moveBeltForward() {
+
+        if (!checkPermissions(permissionShift.get("moveForward"))) return;
 
         System.out.println("Move Belt forward");
 
@@ -66,36 +66,25 @@ public class BaggageScanner implements  IBaggageScanner{
                 tracks[0].trayArrive(tray);
             }
         }
-
-        return true;
+        return;
     }
 
     @Override
-    public boolean moveBeltBackwards() {
-        String auth = operationStation.getUserType();
-        byte value = permissions.get(auth);
-        if ((value & 1) == 0) {
-            System.out.println("Unauthorized usage");
-            return false;
-        }
+    public void moveBeltBackwards() {
+
+        if (!checkPermissions(permissionShift.get("moveBackward"))) return;
 
         Tray tray = tracks[0].getTrays().getLast();
         tray = scanner.move(tray);
         if (tray != null) {
             belt.moveBackwards(tray);
         }
-
-        return true;
     }
 
     @Override
-    public boolean alarm() {
-        String auth = operationStation.getUserType();
-        byte value = permissions.get(auth);
-        if ((value & 1 << 1) == 0) {
-            System.out.println("Unauthorized usage");
-            return false;
-        }
+    public void alarm() {
+
+        if (!checkPermissions(permissionShift.get("alarm"))) return;
 
         System.out.println("Alert!!! Prohibited items in the baggage");
         currentState = currentState.lock();
@@ -115,18 +104,12 @@ public class BaggageScanner implements  IBaggageScanner{
         for (int i = 0; i < inforcement.length; i++) {
             manualPostControl.getCurrentOfficer()[i+1] = inforcement[i];
         }
-
-        return true;
     }
 
     @Override
-    public boolean report() {
-        String auth = operationStation.getUserType();
-        byte value = permissions.get(auth);
-        if ((value & 1 << 2) == 0) {
-            System.out.println("Unauthorized usage");
-            return false;
-        }
+    public void report() {
+
+        if (!checkPermissions(permissionShift.get("report"))) return;
 
         System.out.println();
         System.out.println("Report Start");
@@ -136,23 +119,26 @@ public class BaggageScanner implements  IBaggageScanner{
             System.out.println("Report: Scan result: " + x.toString());
         });
         System.out.println("Report End");
-
-        return true;
     }
 
     @Override
-    public boolean maintenance() {
-        String auth = operationStation.getUserType();
-        byte value = permissions.get(auth);
-        if ((value & 1 << 3) == 0) {
-            System.out.println("Unauthorized usage");
-            return false;
-        }
+    public void maintenance() {
+
+        if (!checkPermissions(permissionShift.get("maintenance"))) return;
 
         System.out.println("Perform maintenance");
 
         currentState.scansDone();
+    }
 
+    public boolean checkPermissions(int shift) {
+
+        String auth = operationStation.getUserType();
+        byte value = permissions.get(auth);
+        if ((value & 1 << shift) == 0) {
+            System.out.println("Unauthorized usage");
+            return false;
+        }
         return true;
     }
 
@@ -250,5 +236,9 @@ public class BaggageScanner implements  IBaggageScanner{
 
     public void setTracks(Track[] tracks) {
         this.tracks = tracks;
+    }
+
+    public Map<String, Integer> getPermissionShift() {
+        return permissionShift;
     }
 }
