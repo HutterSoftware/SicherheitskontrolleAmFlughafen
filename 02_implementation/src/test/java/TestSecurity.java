@@ -103,7 +103,7 @@ public class TestSecurity {
     }
 
     @Test
-    public void employeeProfileTest() throws IOException, URISyntaxException {
+    public void employeeProfileTest() {
 
         BaggageScanner scanner = simulation.getScanner();
         scanner.getSupervision().pressPowerButton();
