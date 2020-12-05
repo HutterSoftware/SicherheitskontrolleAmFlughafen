@@ -107,6 +107,13 @@ public class TestSecurity {
     @Test
     public void employeeProfileTest() {
 
+        BaggageScanner scanner = simulation.getScanner();
+
+        scanner.getSupervision().pressPowerButton();
+        scanner.getOperationStation().getEmployee().enterPin(scanner.getOperationStation().getReader());
+
+        assertTrue(scanner.moveBeltForward());
+
     }
 
     @Test
