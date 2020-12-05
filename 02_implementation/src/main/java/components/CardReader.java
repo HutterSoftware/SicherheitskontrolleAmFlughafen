@@ -63,6 +63,9 @@ public class CardReader {
     }
 
     public void enterPin(String pin) {
+        if (this.card == null) {
+            return;
+        }
         String stripeContent = aes.decrypt(card.getMagnetStripe());
 
         if (pin.equals(stripeContent.split("\\*\\*\\*")[2])) {

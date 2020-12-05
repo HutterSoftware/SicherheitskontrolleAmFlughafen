@@ -39,19 +39,15 @@ public class TestSecurity {
         Employee rollerConveyor = scanner.getRollerConveyor().getWorkingInspector();
         String rCStripeContent = aes.decrypt(rollerConveyor.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
         Employee operationStation = scanner.getOperationStation().getEmployee();
         String oSStripeContent = aes.decrypt(operationStation.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
         Employee manualPostControl = scanner.getManualPostControl().getInspector();
         String mPCStripeContent = aes.decrypt(manualPostControl.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
         Employee supervision = scanner.getSupervision().getEmployee();
         String sStripeContent = aes.decrypt(supervision.getIdCard().getMagnetStripe());
 
-        aes = new AES(configuration.getKey());
         Employee officer = scanner.getOfficer();
         String oStripeContent = aes.decrypt(officer.getIdCard().getMagnetStripe());
 
