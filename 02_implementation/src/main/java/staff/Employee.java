@@ -17,7 +17,6 @@ public class Employee {
 
     public void enterPin(CardReader reader, String pin) {
         System.out.println("Employee: Type pin");
-        System.out.println(idCard.getId());
         reader.swipeCard(idCard);
         reader.enterPin(pin);
     }
