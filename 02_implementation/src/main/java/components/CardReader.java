@@ -74,6 +74,7 @@ public class CardReader {
         if (pin.equals(stripeContent.split("\\*\\*\\*")[2])) {
             System.out.println("Card reader: Pin accepted");
             station.setAuthentication(stripeContent.split("\\*\\*\\*")[1]);
+            station.setUserType(stripeContent.split("\\*\\*\\*")[1]);
         } else {
             if (++countWrongInputs >= 3) {
                 System.out.println("Card Reader: Card is locked");

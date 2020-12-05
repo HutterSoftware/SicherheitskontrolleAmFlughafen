@@ -1,17 +1,12 @@
 package components;
 
 import State.State;
-import State.Shutdown;
 import data.Record;
-import passenger.HandBaggage;
 import passenger.Passenger;
-import staff.FederalPoliceOffice;
 import staff.FederalPoliceOfficer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class BaggageScanner implements  IBaggageScanner{
 
