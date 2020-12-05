@@ -193,6 +193,7 @@ public class Simulation {
             office.getAllOfficers().sort(Comparator.comparing(Employee::getId));
 
             BaggageScanner baggageScanner = new BaggageScanner(configuration.getPermissions());
+            baggageScanner.setCurrentState(new State.Shutdown());
             Track[] tracks = new Track[]{new Track(1), new Track(2)};
             OperationStation operationStation = new OperationStation(baggageScanner);
             CardReader cardReader = new CardReader(new AES(configuration.getKey()), operationStation);
