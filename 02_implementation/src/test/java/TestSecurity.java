@@ -92,7 +92,10 @@ public class TestSecurity {
         Employee officer = this.simulation.getEmployees().get("O1");
         officer.enterPin(this.simulation.getScanner().getOperationStation().getReader());
 
-        System.out.println(simulation.getScanner().getOperationStation().getAuthentication());
+        assertEquals("", simulation.getScanner().getOperationStation().getAuthentication());
+
+        Employee houseKeeping = this.simulation.getEmployees().get("K");
+        houseKeeping.enterPin(this.simulation.getScanner().getOperationStation().getReader());
 
         assertEquals("", simulation.getScanner().getOperationStation().getAuthentication());
     }

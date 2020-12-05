@@ -92,6 +92,7 @@ public class Simulation {
             addEmployee(new FederalPoliceOfficer("O1", "Wesley Snipes", "31.07.1962", "Officer"));
             addEmployee(new FederalPoliceOfficer("O2", "Toto", "01.01.1969", "Officer"));
             addEmployee(new FederalPoliceOfficer("O3", "Harry", "01.01.1969", "Officer"));
+            addEmployee(new HouseKeeping("K", "Jason Clarke", "17.07.169"));
         }
       
         public void defaultPassengers()  {
