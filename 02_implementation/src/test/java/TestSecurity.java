@@ -336,7 +336,6 @@ public class TestSecurity {
     }
 
     @Test
-    @Disabled
     public void simulation() {
         this.simulation.run();
     }

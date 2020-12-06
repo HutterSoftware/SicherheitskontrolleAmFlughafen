@@ -113,7 +113,7 @@ public class BaggageScanner implements  IBaggageScanner{
 
         for (int i = 0; i < inforcement.length; i++) {
             if (this.officer.isTestFlag()) inforcement[i].setTestFlag(true);
-            manualPostControl.getCurrentOfficer()[i+1] = inforcement[i];
+            manualPostControl.setCurrentOfficer(inforcement);
         }
     }
 
