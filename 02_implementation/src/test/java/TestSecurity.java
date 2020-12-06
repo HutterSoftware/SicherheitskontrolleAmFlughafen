@@ -24,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TestSecurity {
 
@@ -53,8 +55,6 @@ public class TestSecurity {
         for (int i = 0; i < numberOfBaggages; i++) {
 
             HandBaggage baggage = passenger.getBaggages()[i];
-            String test = new String(baggage.getLayers()[4].getContent());
-            System.out.println(test.contains("glock|7"));
             data.Record record = TestUtils.scanBaggage(baggage, this.simulation.getScanner().getScanner());
 
             String pItem1 = TestUtils.getProhibitedItemString(prohibitedItem1);
@@ -70,6 +70,7 @@ public class TestSecurity {
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation1[0].charAt(0), prohibitedItemType);
+                assertEquals(Integer.parseInt(prohibitedItemInformation1[2]) - 1, record.getResult().getPosition()[0]);
 
             } else if (!prohibitedItem2.equals("-") && Integer.parseInt(prohibitedItemInformation2[1]) - 1 == i) {
 
@@ -78,6 +79,7 @@ public class TestSecurity {
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation2[0].charAt(0), prohibitedItemType);
+                assertEquals(Integer.parseInt(prohibitedItemInformation2[2]) - 1, record.getResult().getPosition()[0]);
 
             } else {
 
@@ -255,9 +257,26 @@ public class TestSecurity {
         assertEquals("exp|os!ve", result.getProhibitedItemType());
     }
 
-    @Test
-    public void scanRecordTest() {
+    @ParameterizedTest()
+    @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
+    public void scanRecordTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
 
+        Passenger passenger = this.simulation.getPassengerList().get(passengerIndex);
+
+        for (int i = 0; i < numberOfBaggages; i++) {
+
+            HandBaggage baggage = passenger.getBaggages()[i];
+            data.Record record = TestUtils.scanBaggage(baggage, this.simulation.getScanner().getScanner());
+
+            assertNotNull(record.getTimestamp());
+            assertNotNull(record.getResult());
+            assertNotNull(record.getResult().getItemType());
+
+            if (record.getResult().getItemType().equals("PROHIBITED")) {
+
+                assertNotNull(record.getResult().getProhibitedItemType());
+            }
+        }
     }
 
     @Test
