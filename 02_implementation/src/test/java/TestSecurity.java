@@ -5,6 +5,7 @@ import components.Scanner;
 
 import data.ScanResult;
 
+import org.junit.jupiter.api.Disabled;
 import passenger.HandBaggage;
 
 import passenger.Layer;
@@ -288,8 +289,10 @@ public class TestSecurity {
 
         this.simulation.run();
 
+        String correct = TestUtils.readCorrectProcedure(0);
+        String actual = TestUtils.readActualProcedure();
 
-        //File f = new File(Thread.currentThread().getContextClassLoader().getResource("001_baggage.txt").toURI());
+        assertEquals(correct, actual);
     }
 
     @Test
@@ -300,9 +303,15 @@ public class TestSecurity {
         TestUtils.setTestFlag(this.simulation);
 
         this.simulation.run();
+
+        String correct = TestUtils.readCorrectProcedure(1);
+        String actual = TestUtils.readActualProcedure();
+
+        assertEquals(correct, actual);
     }
 
     @Test
+    @Disabled
     public void weaponProcedureTest() throws IOException, URISyntaxException {
 
         TestUtils.clearProcedureTestFile();
@@ -310,9 +319,15 @@ public class TestSecurity {
         TestUtils.setTestFlag(this.simulation);
 
         this.simulation.run();
+
+        String correct = TestUtils.readCorrectProcedure(0);
+        String actual = TestUtils.readActualProcedure();
+
+        assertEquals(correct, actual);
     }
 
     @Test
+    @Disabled
     public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
         TestUtils.clearProcedureTestFile();
@@ -320,9 +335,15 @@ public class TestSecurity {
         TestUtils.setTestFlag(this.simulation);
 
         this.simulation.run();
+
+        String correct = TestUtils.readCorrectProcedure(0);
+        String actual = TestUtils.readActualProcedure();
+
+        assertEquals(correct, actual);
     }
 
     @Test
+    @Disabled
     public void simulation() {
         this.simulation.run();
     }
