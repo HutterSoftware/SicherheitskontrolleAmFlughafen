@@ -67,8 +67,7 @@ public class TestSecurity {
 
             if (!prohibitedItem1.equals("-") && Integer.parseInt(prohibitedItemInformation1[1]) - 1 == i) {
 
-                char prohibitedItemType = Character.toUpperCase(record.getResult().getProhibitedItemType().charAt(0));
-                if (prohibitedItemType == 'G') prohibitedItemType = 'W';
+                char prohibitedItemType = record.getResult().getProhibitedItemType().charAt(0);
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation1[0].charAt(0), prohibitedItemType);
@@ -76,8 +75,7 @@ public class TestSecurity {
 
             } else if (!prohibitedItem2.equals("-") && Integer.parseInt(prohibitedItemInformation2[1]) - 1 == i) {
 
-                char prohibitedItemType = Character.toUpperCase(record.getResult().getProhibitedItemType().charAt(0));
-                if (prohibitedItemType == 'G') prohibitedItemType = 'W';
+                char prohibitedItemType = record.getResult().getProhibitedItemType().charAt(0);
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation2[0].charAt(0), prohibitedItemType);
