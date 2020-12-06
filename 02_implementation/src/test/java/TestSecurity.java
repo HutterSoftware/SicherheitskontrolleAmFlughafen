@@ -1,22 +1,29 @@
 import algorithms.AES;
+
 import components.BaggageScanner;
 import components.Scanner;
+
 import data.ScanResult;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+
 import passenger.HandBaggage;
 import passenger.Passenger;
+
 import simulation.Configuration;
 import simulation.Simulation;
+
 import staff.Employee;
 import staff.Supervisor;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.*;
+import java.net.URISyntaxException;
 
 public class TestSecurity {
 
@@ -277,8 +284,10 @@ public class TestSecurity {
 
         this.simulation.run();
 
+        String correct = TestUtils.readCorrectProcedure(0);
+        String actual = TestUtils.readActualProcedure();
 
-        //File f = new File(Thread.currentThread().getContextClassLoader().getResource("001_baggage.txt").toURI());
+        assertEquals(correct, actual);
     }
 
     @Test
@@ -289,9 +298,15 @@ public class TestSecurity {
         TestUtils.setTestFlag(this.simulation);
 
         this.simulation.run();
+
+        String correct = TestUtils.readCorrectProcedure(1);
+        String actual = TestUtils.readActualProcedure();
+
+        assertEquals(correct, actual);
     }
 
     @Test
+    @Disabled
     public void weaponProcedureTest() throws IOException, URISyntaxException {
 
         TestUtils.clearProcedureTestFile();
@@ -299,9 +314,15 @@ public class TestSecurity {
         TestUtils.setTestFlag(this.simulation);
 
         this.simulation.run();
+
+        String correct = TestUtils.readCorrectProcedure(0);
+        String actual = TestUtils.readActualProcedure();
+
+        assertEquals(correct, actual);
     }
 
     @Test
+    @Disabled
     public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
         TestUtils.clearProcedureTestFile();
@@ -309,9 +330,15 @@ public class TestSecurity {
         TestUtils.setTestFlag(this.simulation);
 
         this.simulation.run();
+
+        String correct = TestUtils.readCorrectProcedure(0);
+        String actual = TestUtils.readActualProcedure();
+
+        assertEquals(correct, actual);
     }
 
     @Test
+    @Disabled
     public void simulation() {
         this.simulation.run();
     }
