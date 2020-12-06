@@ -13,7 +13,17 @@ public class ScanResult {
 
     public ScanResult(String resultType, String prohibitedItemType, int[] position) {
         this.itemType = resultType;
-        this.prohibitedItemType = prohibitedItemType;
+
+        if (prohibitedItemType != null) {
+            switch (prohibitedItemType.charAt(0)) {
+                case 'k' -> this.prohibitedItemType = PROHIBITED_ITEM_TYPE_KNIFE;
+                case 'g' -> this.prohibitedItemType = PROHIBITED_ITEM_TYPE_WEAPON;
+                case 'e' -> this.prohibitedItemType = PROHIBITED_ITEM_TYPE_EXPLOSIVE;
+            }
+        } else {
+            this.prohibitedItemType = null;
+        }
+
         this.position = position;
     }
 
