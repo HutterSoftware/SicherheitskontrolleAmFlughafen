@@ -1,0 +1,1 @@
+moveForward|scanBaggage|reactToProhibited|prohibited1|notifyKnife|removeItem|moveBackward|scanBaggage|moveForward|clean2|
