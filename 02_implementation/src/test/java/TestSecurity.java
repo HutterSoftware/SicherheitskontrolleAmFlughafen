@@ -55,8 +55,6 @@ public class TestSecurity {
         for (int i = 0; i < numberOfBaggages; i++) {
 
             HandBaggage baggage = passenger.getBaggages()[i];
-            String test = new String(baggage.getLayers()[4].getContent());
-            System.out.println(test.contains("glock|7"));
             data.Record record = TestUtils.scanBaggage(baggage, this.simulation.getScanner().getScanner());
 
             String pItem1 = TestUtils.getProhibitedItemString(prohibitedItem1);
@@ -72,6 +70,7 @@ public class TestSecurity {
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation1[0].charAt(0), prohibitedItemType);
+                assertEquals(Integer.parseInt(prohibitedItemInformation1[2]) - 1, record.getResult().getPosition()[0]);
 
             } else if (!prohibitedItem2.equals("-") && Integer.parseInt(prohibitedItemInformation2[1]) - 1 == i) {
 
@@ -80,6 +79,7 @@ public class TestSecurity {
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation2[0].charAt(0), prohibitedItemType);
+                assertEquals(Integer.parseInt(prohibitedItemInformation2[2]) - 1, record.getResult().getPosition()[0]);
 
             } else {
 
