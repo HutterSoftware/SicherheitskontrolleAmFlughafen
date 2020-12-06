@@ -43,6 +43,7 @@ public class Inspector extends Employee {
         System.out.println("Inspector: The baggage isn't clean");
         Tray tray = scanner.getScanner().move(null);
         scanner.getTracks()[0].trayArrive(tray);
+        scanner.getManualPostControl().setCurrentPassenger(tray.getContainedBaggage().getOwner());
         if (testFlag) new write().writeTestFile("prohibited1");
 
         switch (itemType) {

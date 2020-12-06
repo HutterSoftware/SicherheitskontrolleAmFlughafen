@@ -273,10 +273,19 @@ public class Simulation {
             operationStation.setReader(cardReader);
             operationStation.setButtons(buttons);
 
+            office.registerNewOfficer((FederalPoliceOfficer)employeeMap.get("O1"));
+            office.registerNewOfficer((FederalPoliceOfficer)employeeMap.get("O2"));
+            office.registerNewOfficer((FederalPoliceOfficer)employeeMap.get("O3"));
+
             // Build the whole baggage scanner
             baggageScanner.setTraySupplier(new TraySupplyer(baggageScanner));
             baggageScanner.setTracks(tracks);
             baggageScanner.setManualPostControl(new ManualPostControl(baggageScanner, tracks[0], new TraceDetector()));
+            baggageScanner.getManualPostControl().setCurrentOfficer(new FederalPoliceOfficer[]{
+                    (FederalPoliceOfficer)employeeMap.get("O1"),
+                    (FederalPoliceOfficer)employeeMap.get("O2"),
+                    (FederalPoliceOfficer)employeeMap.get("O3")});
+
             baggageScanner.setOperationStation(operationStation);
             baggageScanner.setBelt(new Belt());
             baggageScanner.setRollerConveyor(new RollerConveyor(baggageScanner));

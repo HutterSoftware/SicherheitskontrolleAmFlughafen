@@ -306,7 +306,6 @@ public class TestSecurity {
     }
 
     @Test
-    @Disabled
     public void weaponProcedureTest() throws IOException, URISyntaxException {
 
         TestUtils.clearProcedureTestFile();
@@ -322,7 +321,6 @@ public class TestSecurity {
     }
 
     @Test
-    @Disabled
     public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
         TestUtils.clearProcedureTestFile();
