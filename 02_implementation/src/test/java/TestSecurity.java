@@ -222,7 +222,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("kn!fe", result.getProhibitedItemType());
+        assertEquals("knife", result.getProhibitedItemType());
     }
 
     @Test
