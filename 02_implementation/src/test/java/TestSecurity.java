@@ -26,6 +26,8 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TestSecurity {
 
@@ -65,8 +67,7 @@ public class TestSecurity {
 
             if (!prohibitedItem1.equals("-") && Integer.parseInt(prohibitedItemInformation1[1]) - 1 == i) {
 
-                char prohibitedItemType = Character.toUpperCase(record.getResult().getProhibitedItemType().charAt(0));
-                if (prohibitedItemType == 'G') prohibitedItemType = 'W';
+                char prohibitedItemType = record.getResult().getProhibitedItemType().charAt(0);
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation1[0].charAt(0), prohibitedItemType);
@@ -74,8 +75,7 @@ public class TestSecurity {
 
             } else if (!prohibitedItem2.equals("-") && Integer.parseInt(prohibitedItemInformation2[1]) - 1 == i) {
 
-                char prohibitedItemType = Character.toUpperCase(record.getResult().getProhibitedItemType().charAt(0));
-                if (prohibitedItemType == 'G') prohibitedItemType = 'W';
+                char prohibitedItemType = record.getResult().getProhibitedItemType().charAt(0);
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
                 assertEquals(prohibitedItemInformation2[0].charAt(0), prohibitedItemType);
@@ -280,22 +280,50 @@ public class TestSecurity {
     }
 
     @Test
-    public void noProhibitedProcessTest() {
+    public void noProhibitedProcedureTest() throws IOException, URISyntaxException {
 
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "normal_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
+
+
+        //File f = new File(Thread.currentThread().getContextClassLoader().getResource("001_baggage.txt").toURI());
     }
 
     @Test
-    public void knifeProcessTest() {
+    public void knifeProcessTest() throws IOException, URISyntaxException {
 
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "knife_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
     }
 
     @Test
-    public void weaponProcessTest() {
+    public void weaponProcedureTest() throws IOException, URISyntaxException {
 
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "weapon_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
     }
 
     @Test
-    public void explosivesProcessTest() {
+    public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "explosive_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
+    }
+
+    @Test
+    public void simulation() {
+        this.simulation.run();
     }
 }

@@ -74,6 +74,10 @@ public class Simulation {
         return passengerList;
     }
 
+    public void setPassengerList(List<Passenger> passengerList) {
+        this.passengerList = passengerList;
+    }
+
     public BaggageScanner getScanner() {
         return scanner;
     }

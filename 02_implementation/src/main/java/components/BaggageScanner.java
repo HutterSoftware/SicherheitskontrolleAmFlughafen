@@ -5,6 +5,7 @@ import data.Record;
 import passenger.Passenger;
 import simulation.Configuration;
 import staff.FederalPoliceOfficer;
+import test.write;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,6 +30,8 @@ public class BaggageScanner implements  IBaggageScanner{
 
     private Map<String, Integer> permissionShift = new HashMap<>();
 
+    private boolean testFlag = false;
+
     public BaggageScanner(HashMap<String, Byte> permissions) {
         this.permissions = permissions;
 
@@ -43,6 +46,8 @@ public class BaggageScanner implements  IBaggageScanner{
     @Override
     public void scanHandBaggage() {
 
+        if (testFlag) new write().writeTestFile("scanBaggage");
+
         if (!checkPermissions(permissionShift.get("scan"))) return;
 
         currentState = currentState.scan();
@@ -53,6 +58,8 @@ public class BaggageScanner implements  IBaggageScanner{
     @Override
     public void moveBeltForward() {
 
+        if (testFlag) new write().writeTestFile("moveForward");
+
         if (!checkPermissions(permissionShift.get("moveForward"))) return;
 
         System.out.println("Move Belt forward");
@@ -62,8 +69,10 @@ public class BaggageScanner implements  IBaggageScanner{
 
         if (tray != null) {
             if (scanResults.getLast().getResult().getItemType() == "CLEAN") {
+                if (testFlag) new write().writeTestFile("clean2");
                 tracks[1].trayArrive(tray);
             } else {
+                if (testFlag) new write().writeTestFile("prohibited1");
                 tracks[0].trayArrive(tray);
             }
         }
@@ -71,6 +80,8 @@ public class BaggageScanner implements  IBaggageScanner{
 
     @Override
     public void moveBeltBackwards() {
+
+        if (testFlag) new write().writeTestFile("moveBackward");
 
         if (!checkPermissions(permissionShift.get("moveBackward"))) return;
 
@@ -102,6 +113,7 @@ public class BaggageScanner implements  IBaggageScanner{
         FederalPoliceOfficer[] inforcement = officer.getOffice().requestReinforcement();
 
         for (int i = 0; i < inforcement.length; i++) {
+            if (this.officer.isTestFlag()) inforcement[i].setTestFlag(true);
             manualPostControl.getCurrentOfficer()[i+1] = inforcement[i];
         }
     }
@@ -271,5 +283,9 @@ public class BaggageScanner implements  IBaggageScanner{
 
     public Map<String, Integer> getPermissionShift() {
         return permissionShift;
+    }
+
+    public void setTestFlag(boolean testFlag) {
+        this.testFlag = testFlag;
     }
 }

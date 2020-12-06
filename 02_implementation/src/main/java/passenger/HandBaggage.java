@@ -1,6 +1,7 @@
 package passenger;
 
 import explosivedevicecomponents.TestStrip;
+import test.write;
 
 import java.util.Arrays;
 
@@ -8,6 +9,7 @@ public class HandBaggage {
 
     private Passenger owner;
     private Layer[] layers;
+    private boolean testFlag = false;
 
     public HandBaggage(Passenger passenger, Layer[] layers) {
         this.owner = passenger;
@@ -23,6 +25,7 @@ public class HandBaggage {
     }
 
     public String takeContent(int layer, int position, int length) {
+        if (testFlag) new write().writeTestFile("removeItem");
         char[] origin = layers[layer].getContent();
         char[] copy = Arrays.copyOfRange(origin, position, position + length);
         for (int i = 0; i < length; i++) {
@@ -40,5 +43,9 @@ public class HandBaggage {
 
     public void clearLayer() {
         this.layers = null;
+    }
+
+    public void setTestFlag(boolean testFlag) {
+        this.testFlag = testFlag;
     }
 }

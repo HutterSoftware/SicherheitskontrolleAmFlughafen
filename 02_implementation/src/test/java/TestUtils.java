@@ -5,13 +5,14 @@ import passenger.Layer;
 import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
+import staff.FederalPoliceOfficer;
+import staff.Inspector;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TestUtils {
 
@@ -48,5 +49,35 @@ public class TestUtils {
         }
         prohibitedItem = prohibitedItem.split("]")[0];
         return prohibitedItem;
+    }
+
+    public static void clearProcedureTestFile() throws IOException {
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("./src/main/resources/Procedure.txt", false));
+        writer.write("");
+        writer.close();
+    }
+
+    public static void setTestPassenger(Simulation simulation, String filename) throws IOException, URISyntaxException {
+
+        List<Passenger> passengers = new LinkedList<>();
+        HandBaggage[] baggages = {createBaggage(filename)};
+        Passenger passenger = baggages[0].getOwner();
+        passenger.setBaggages(baggages);
+        passengers.add(passenger);
+        simulation.setPassengerList(passengers);
+
+        simulation.getScanner().getTraySupplier().getPassengers().clear();
+        simulation.initializeSimulation();
+    }
+
+    public static void setTestFlag(Simulation simulation) {
+
+        simulation.getScanner().setTestFlag(true);
+        ((Inspector)simulation.getEmployees().get("I2")).setTestFlag(true);
+        ((Inspector)simulation.getEmployees().get("I3")).setTestFlag(true);
+        simulation.getPassengerList().get(0).getBaggages()[0].setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).getOffice().setTestFlag(true);
     }
 }
