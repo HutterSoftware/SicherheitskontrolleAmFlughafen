@@ -80,4 +80,25 @@ public class TestUtils {
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).getOffice().setTestFlag(true);
     }
+
+    public static String readCorrectProcedure(int procedureNumber) throws IOException, URISyntaxException {
+
+        File procedure = new File(TestUtils.class.getResource("correct_procedure.txt").toURI());
+        BufferedReader reader = new BufferedReader(new FileReader(procedure));
+        String line = reader.readLine();
+
+        for (int i = 0; i < procedureNumber; i++) {
+            line = reader.readLine();
+        }
+
+        return line;
+    }
+
+    public static String readActualProcedure() throws IOException, URISyntaxException {
+
+        File procedure = new File(Thread.currentThread().getContextClassLoader().getResource("Procedure.txt").toURI());
+        BufferedReader reader = new BufferedReader(new FileReader(procedure));
+
+        return reader.readLine();
+    }
 }
