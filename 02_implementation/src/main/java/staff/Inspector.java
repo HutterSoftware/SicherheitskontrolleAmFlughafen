@@ -89,6 +89,7 @@ public class Inspector extends Employee {
     }
 
     public void triggerAlert(BaggageScanner baggageScanner) {
+        if (testFlag) new write().writeTestFile("alarm");
         System.out.println("Inspector: Start alarm");
         baggageScanner.alarm();
     }
@@ -169,6 +170,7 @@ public class Inspector extends Employee {
     }
 
     public void testBaggageForExplosiveElements(ManualPostControl manualPostControl) {
+        if (testFlag) new write().writeTestFile("testExplosive");
         System.out.println("Inspector: Testing for explosive items");
         manualPostControl.setCurrentTrayToInvestigate(manualPostControl.getTrack().getTrays().removeLast());
 

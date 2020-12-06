@@ -5,6 +5,7 @@ import passenger.Layer;
 import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
+import staff.FederalPoliceOfficer;
 import staff.Inspector;
 
 import java.io.*;
@@ -76,5 +77,7 @@ public class TestUtils {
         ((Inspector)simulation.getEmployees().get("I2")).setTestFlag(true);
         ((Inspector)simulation.getEmployees().get("I3")).setTestFlag(true);
         simulation.getPassengerList().get(0).getBaggages()[0].setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).getOffice().setTestFlag(true);
     }
 }
