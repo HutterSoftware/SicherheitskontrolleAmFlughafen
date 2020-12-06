@@ -7,7 +7,7 @@ import data.ScanResult;
 import explosivedevicecomponents.TestStrip;
 import passenger.HandBaggage;
 import passenger.Passenger;
-import test.write;
+import test.*;
 
 import java.util.Arrays;
 import java.util.List;
