@@ -112,6 +112,8 @@ public class TestUtils {
         ((Inspector)simulation.getEmployees().get("I3")).setTestFlag(true);
         simulation.getPassengerList().get(0).getBaggages()[0].setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O2")).setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O3")).setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).getOffice().setTestFlag(true);
     }
 
