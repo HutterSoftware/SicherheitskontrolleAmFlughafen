@@ -4,6 +4,7 @@ import State.Locked;
 import components.*;
 import data.Record;
 import data.ScanResult;
+import explosivedevicecomponents.DisarmRobot;
 import explosivedevicecomponents.TestStrip;
 import passenger.HandBaggage;
 import passenger.Passenger;
@@ -181,11 +182,14 @@ public class Inspector extends Employee {
         boolean result = manualPostControl.getDetector().testStripe(stripe);
 
         if (result) {
+            if (testFlag) new write().writeTestFile("explosiveApproved");
             System.out.println("Inspector: Explosives found");
             FederalPoliceOfficer explosivesOfficer = Arrays.stream(manualPostControl.getCurrentOfficer()).
                     filter(federalPoliceOfficer -> federalPoliceOfficer.getId().equals("O2")).findFirst().orElseThrow();
 
-            explosivesOfficer.steerRobot(explosivesOfficer.getOffice().getDisarmRobot(), manualPostControl.getScanner());
+            DisarmRobot robot = explosivesOfficer.getOffice().getDisarmRobot();
+            if (explosivesOfficer.isTestFlag()) robot.setTestFlag(true);
+            explosivesOfficer.steerRobot(robot, manualPostControl.getScanner());
         } else {
             System.out.println("Inspector: Explosives not found");
         }

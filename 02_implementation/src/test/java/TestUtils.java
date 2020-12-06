@@ -115,6 +115,7 @@ public class TestUtils {
         ((FederalPoliceOfficer)simulation.getEmployees().get("O2")).setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O3")).setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).getOffice().setTestFlag(true);
+        simulation.getScanner().getManualPostControl().getDetector().setTestFlag(true);
     }
 
     /**

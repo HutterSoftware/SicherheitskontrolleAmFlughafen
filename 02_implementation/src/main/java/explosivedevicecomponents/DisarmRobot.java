@@ -2,10 +2,13 @@ package explosivedevicecomponents;
 
 import passenger.HandBaggage;
 import passenger.Layer;
+import test.write;
 
 import java.util.Arrays;
 
 public class DisarmRobot {
+
+    private boolean testFlag = false;
 
     public void destroyBaggage(HandBaggage baggage) {
         Arrays.asList(baggage.getLayers()).stream().map(Layer::getContent).map(chars -> {
@@ -18,5 +21,10 @@ public class DisarmRobot {
 
         baggage.clearLayer();
         System.out.println("Baggage was destroyed");
+        if (testFlag) new write().writeTestFile("robotDestroyedBaggage");
+    }
+
+    public void setTestFlag(boolean testFlag) {
+        this.testFlag = testFlag;
     }
 }
