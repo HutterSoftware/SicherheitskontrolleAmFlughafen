@@ -1,22 +1,33 @@
 import algorithms.AES;
+
 import components.BaggageScanner;
 import components.Scanner;
+
 import data.ScanResult;
+
+import passenger.HandBaggage;
+
+import passenger.Layer;
+import passenger.Passenger;
+import simulation.Configuration;
+import simulation.Simulation;
+
+import staff.Employee;
+import staff.Supervisor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import passenger.HandBaggage;
-import passenger.Passenger;
-import simulation.Configuration;
-import simulation.Simulation;
-import staff.Employee;
-import staff.Supervisor;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TestSecurity {
 
@@ -215,7 +226,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("knife", result.getProhibitedItemType());
+        assertEquals("kn!fe", result.getProhibitedItemType());
     }
 
     @Test
