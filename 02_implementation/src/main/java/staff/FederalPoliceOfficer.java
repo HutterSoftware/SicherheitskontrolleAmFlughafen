@@ -3,10 +3,12 @@ package staff;
 import components.BaggageScanner;
 import explosivedevicecomponents.DisarmRobot;
 import passenger.Passenger;
+import test.write;
 
 public class FederalPoliceOfficer extends Employee {
     private String grade;
     private FederalPoliceOffice office;
+    private boolean testFlag = false;
 
     public FederalPoliceOfficer(String id, String name, String birthDate, String grade) {
         this.id = id;
@@ -29,7 +31,7 @@ public class FederalPoliceOfficer extends Employee {
     }
 
     public void arrestPassenger(Passenger passenger) {
-
+        if (testFlag) new write().writeTestFile("arrestPassenger");
     }
 
     public void takeWeapon(String weapon) {
@@ -37,6 +39,15 @@ public class FederalPoliceOfficer extends Employee {
     }
 
     public void steerRobot(DisarmRobot robot, BaggageScanner baggageScanner) {
+        if (testFlag) new write().writeTestFile("steerRobot");
         robot.destroyBaggage(baggageScanner.getManualPostControl().getCurrentTrayToInvestigate().takeBaggage());
+    }
+
+    public void setTestFlag(boolean testFlag) {
+        this.testFlag = testFlag;
+    }
+
+    public boolean isTestFlag() {
+        return testFlag;
     }
 }
