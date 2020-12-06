@@ -263,9 +263,6 @@ public class TestSecurity {
 
         Passenger passenger = this.simulation.getPassengerList().get(passengerIndex);
 
-        assertEquals(name, passenger.getName());
-        assertEquals(numberOfBaggages, passenger.getBaggages().length);
-
         for (int i = 0; i < numberOfBaggages; i++) {
 
             HandBaggage baggage = passenger.getBaggages()[i];
@@ -273,16 +270,6 @@ public class TestSecurity {
 
             assertNotNull(record.getTimestamp());
             assertNotNull(record.getResult());
-
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm:ss,SSS");
-//            LocalDateTime now = LocalDateTime.now();
-//            LocalDateTime before10min = now.minusMinutes(10);
-//            LocalDateTime scan = LocalDateTime.parse(record.getTimestamp(), formatter);
-//
-//            assertTrue(scan.isAfter(before10min));
-//            assertTrue(scan.isBefore(now));
-
-
             assertNotNull(record.getResult().getItemType());
 
             if (record.getResult().getItemType().equals("PROHIBITED")) {
