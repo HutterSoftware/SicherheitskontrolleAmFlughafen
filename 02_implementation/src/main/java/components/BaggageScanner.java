@@ -139,7 +139,7 @@ public class BaggageScanner implements  IBaggageScanner{
 
         System.out.println("Perform maintenance");
 
-        currentState.scansDone();
+        currentState = currentState.scansDone();
     }
 
     public boolean checkPermissions(int shift) {

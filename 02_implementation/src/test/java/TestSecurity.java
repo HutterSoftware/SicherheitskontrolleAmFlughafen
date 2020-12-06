@@ -15,9 +15,6 @@ import simulation.Simulation;
 import staff.Employee;
 import staff.Supervisor;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -363,5 +360,8 @@ public class TestSecurity {
     @Test
     public void simulation() {
         this.simulation.run();
+
+        assertTrue(simulation.getScanner().getTraySupplier().getPassengers().isEmpty());
+        assertEquals("Shutdown", simulation.getScanner().getCurrentState().getClass().getSimpleName());
     }
 }
