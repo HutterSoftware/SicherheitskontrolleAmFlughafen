@@ -61,7 +61,7 @@ public class Inspector extends Employee {
                 System.out.println("Inspector: Explosives was found");
                 triggerAlert(scanner);
 
-                List<HandBaggage> baggages = Arrays.asList(scanner.getManualPostControl().getCurrentPassenger().getBaggages());
+                List<HandBaggage> baggages = new LinkedList<>(Arrays.asList(scanner.getManualPostControl().getCurrentPassenger().getBaggages()));
                 baggages.remove(tray.getContainedBaggage());
 
                 ((Inspector)scanner.getManualPostControl().getInspector()).
