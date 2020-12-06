@@ -314,7 +314,7 @@ public class TestSecurity {
 
         this.simulation.run();
 
-        String correct = TestUtils.readCorrectProcedure(0);
+        String correct = TestUtils.readCorrectProcedure(2);
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
@@ -329,7 +329,7 @@ public class TestSecurity {
 
         this.simulation.run();
 
-        String correct = TestUtils.readCorrectProcedure(0);
+        String correct = TestUtils.readCorrectProcedure(3);
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
