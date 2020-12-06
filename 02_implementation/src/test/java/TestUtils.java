@@ -112,7 +112,10 @@ public class TestUtils {
         ((Inspector)simulation.getEmployees().get("I3")).setTestFlag(true);
         simulation.getPassengerList().get(0).getBaggages()[0].setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O2")).setTestFlag(true);
+        ((FederalPoliceOfficer)simulation.getEmployees().get("O3")).setTestFlag(true);
         ((FederalPoliceOfficer)simulation.getEmployees().get("O1")).getOffice().setTestFlag(true);
+        simulation.getScanner().getManualPostControl().getDetector().setTestFlag(true);
     }
 
     /**
@@ -140,11 +143,10 @@ public class TestUtils {
      * load the actual procedure from a file
      * @return a string with the actual procedure
      * @throws IOException IOException
-     * @throws URISyntaxException URISyntaxException
      */
-    public static String readActualProcedure() throws IOException, URISyntaxException {
+    public static String readActualProcedure() throws IOException {
 
-        File procedure = new File(Thread.currentThread().getContextClassLoader().getResource("Procedure.txt").toURI());
+        File procedure = new File("./src/main/resources/Procedure.txt");
         BufferedReader reader = new BufferedReader(new FileReader(procedure));
 
         return reader.readLine();

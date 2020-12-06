@@ -21,6 +21,7 @@ public class HandBaggage {
     }
 
     public TestStrip swipeTest() {
+        if (testFlag) new write().writeTestFile("swipeTest");
         return new TestStrip();
     }
 
