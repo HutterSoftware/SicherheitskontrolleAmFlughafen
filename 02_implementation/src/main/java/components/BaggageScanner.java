@@ -3,7 +3,6 @@ package components;
 import State.State;
 import data.Record;
 import passenger.Passenger;
-import simulation.Configuration;
 import staff.FederalPoliceOfficer;
 
 import java.util.HashMap;

@@ -3,7 +3,6 @@ package components;
 import explosivedevicecomponents.TraceDetector;
 import passenger.Passenger;
 import staff.Employee;
-import staff.FederalPoliceOffice;
 import staff.FederalPoliceOfficer;
 
 public class ManualPostControl {
