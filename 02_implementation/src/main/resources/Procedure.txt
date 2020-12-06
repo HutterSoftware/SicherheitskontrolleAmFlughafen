@@ -1,1 +1,1 @@
-moveForward|scanBaggage|reactToProhibited|prohibited1|alarm|arrestPassenger|requestInforcement|notifyWeapon|removeItem|O3takeWeapon|moveForward|moveForward|
+moveForward|scanBaggage|reactToProhibited|prohibited1|alarm|arrestPassenger|requestInforcement|

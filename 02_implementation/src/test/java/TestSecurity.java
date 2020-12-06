@@ -284,7 +284,7 @@ public class TestSecurity {
 
         this.simulation.run();
 
-        String correct = TestUtils.readCorrectProcedure(0);
+        String correct = TestUtils.readCorrectProcedure(4);
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
@@ -336,7 +336,6 @@ public class TestSecurity {
     }
 
     @Test
-    @Disabled
     public void simulation() {
         this.simulation.run();
     }
