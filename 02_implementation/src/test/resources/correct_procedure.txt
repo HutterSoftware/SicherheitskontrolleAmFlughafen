@@ -2,3 +2,4 @@ moveForward|scanBaggage|reactToProhibited|prohibited1|removeItem|moveForward|mov
 moveForward|scanBaggage|reactToProhibited|prohibited1|notifyKnife|removeItem|moveBackward|scanBaggage|moveForward|clean2|
 WEAPON
 EXPLOSIVE
+moveForward|scanBaggage|moveForward|clean2|
