@@ -303,12 +303,27 @@ public class TestSecurity {
     }
 
     @Test
-    public void weaponProcedureTest() {
+    public void weaponProcedureTest() throws IOException, URISyntaxException {
 
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "weapon_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
     }
 
     @Test
-    public void explosivesProcedureTest() {
+    public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "explosive_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
+    }
+
+    @Test
+    public void simulation() {
+        this.simulation.run();
     }
 }
