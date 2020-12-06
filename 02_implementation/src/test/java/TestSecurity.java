@@ -14,9 +14,9 @@ import simulation.Simulation;
 import staff.Employee;
 import staff.Supervisor;
 
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -25,11 +25,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.*;
 import java.net.URISyntaxException;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestSecurity {
 
     private Simulation simulation;
     private Configuration configuration;
 
+    /**
+     * create simulation
+     */
     @BeforeEach
     public void createSimulation() {
         Simulation.Builder builder = new Simulation.Builder();
@@ -41,6 +45,19 @@ public class TestSecurity {
         this.simulation.initializeSimulation();
     }
 
+    /**
+     * test if there are 568 passengers
+     * test if every passenger has the correct amount of baggages
+     * test if prohibited items are in right baggage
+     * test if prohibited items are in right layer of baggage
+     * @param passengerIndex the index of the passenger
+     * @param baggageIndex index of first baggage of passenger (not used)
+     * @param name the name of the passenger
+     * @param numberOfBaggages number of baggages of passenger
+     * @param prohibitedItem1 prohibitedItem1 or - (example: [K,1,2])
+     * @param prohibitedItem2 prohibitedItem2 or -
+     */
+    @Order(1)
     @ParameterizedTest()
     @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
     public void simulationTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
@@ -84,6 +101,10 @@ public class TestSecurity {
         }
     }
 
+    /**
+     * test if every position of BaggageScanner has the correct type of employee
+     */
+    @Order(2)
     @Test
     public void employeePositionTest() {
 
@@ -118,6 +139,10 @@ public class TestSecurity {
         assertEquals("O", oStripeContent.split("\\*\\*\\*")[1]);
     }
 
+    /**
+     * idCard should be locked if employee typed wrong pin three times
+     */
+    @Order(3)
     @Test
     public void lockIDCardTest() {
 
@@ -130,6 +155,10 @@ public class TestSecurity {
         assertTrue(inspector.getIdCard().isLocked());
     }
 
+    /**
+     * profile K and profile O should not be able to login at BaggageScanner
+     */
+    @Order(4)
     @Test
     public void scannerLoginTest() {
 
@@ -144,6 +173,16 @@ public class TestSecurity {
         assertEquals("", simulation.getScanner().getOperationStation().getAuthentication());
     }
 
+    /**
+     * test if employee is only able to do his functions
+     * moveBeltForward  -> Inspector
+     * moveBeltBackward -> Inspector
+     * scanHandBaggage  -> Inspector
+     * alarm            -> Inspector
+     * report           -> Supervisor
+     * maintenance      -> Technician
+     */
+    @Order(5)
     @Test
     public void employeeProfileTest() {
 
@@ -185,6 +224,10 @@ public class TestSecurity {
         assertTrue(scanner.checkPermissions("maintenance"));
     }
 
+    /**
+     * only a Supervisor should be able to unlock a (locked) BaggageScanner
+     */
+    @Order(6)
     @Test
     public void unlockScannerTest() {
 
@@ -211,6 +254,12 @@ public class TestSecurity {
         assertEquals("Activated", scanner.getCurrentState().getClass().getSimpleName());
     }
 
+    /**
+     * Record/Result should contain
+     * PROHIBITED -> ProhibitedItem
+     * KNIFE      -> knife
+     */
+    @Order(7)
     @Test
     public void knifeTest() throws IOException, URISyntaxException {
 
@@ -225,6 +274,12 @@ public class TestSecurity {
         assertEquals("knife", result.getProhibitedItemType());
     }
 
+    /**
+     * Record/Result should contain
+     * PROHIBITED -> ProhibitedItem
+     * WEAPON     -> weapon
+     */
+    @Order(8)
     @Test
     public void weaponTest() throws IOException, URISyntaxException {
 
@@ -239,6 +294,12 @@ public class TestSecurity {
         assertEquals("weapon", result.getProhibitedItemType());
     }
 
+    /**
+     * Record/Result should contain
+     * PROHIBITED -> ProhibitedItem
+     * EXPLOSIVE  -> explosive
+     */
+    @Order(9)
     @Test
     public void explosiveTest() throws IOException, URISyntaxException {
 
@@ -253,6 +314,16 @@ public class TestSecurity {
         assertEquals("explosive", result.getProhibitedItemType());
     }
 
+    /**
+     * every scan should generate a record
+     * @param passengerIndex the index of the passenger
+     * @param baggageIndex index of first baggage of passenger (not used)
+     * @param name the name of the passenger
+     * @param numberOfBaggages number of baggages of passenger
+     * @param prohibitedItem1 prohibitedItem1 or - (example: [K,1,2])
+     * @param prohibitedItem2 prohibitedItem2 or -
+     */
+    @Order(10)
     @ParameterizedTest()
     @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
     public void scanRecordTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
@@ -275,6 +346,10 @@ public class TestSecurity {
         }
     }
 
+    /**
+     * procedure for normal baggage
+     */
+    @Order(11)
     @Test
     public void noProhibitedProcedureTest() throws IOException, URISyntaxException {
 
@@ -284,12 +359,18 @@ public class TestSecurity {
 
         this.simulation.run();
 
-        String correct = TestUtils.readCorrectProcedure(4);
+        String correct = TestUtils.readCorrectProcedure(0);
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
+    /**
+     * procedure for knife baggage
+     */
+    @Order(12)
     @Test
     public void knifeProcessTest() throws IOException, URISyntaxException {
 
@@ -303,8 +384,14 @@ public class TestSecurity {
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
+    /**
+     * procedure for weapon baggage
+     */
+    @Order(13)
     @Test
     public void weaponProcedureTest() throws IOException, URISyntaxException {
 
@@ -314,12 +401,18 @@ public class TestSecurity {
 
         this.simulation.run();
 
-        String correct = TestUtils.readCorrectProcedure(0);
+        String correct = TestUtils.readCorrectProcedure(2);
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
+    /**
+     * procedure for explosive baggage
+     */
+    @Order(14)
     @Test
     public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
@@ -329,14 +422,25 @@ public class TestSecurity {
 
         this.simulation.run();
 
-        String correct = TestUtils.readCorrectProcedure(0);
+        String correct = TestUtils.readCorrectProcedure(3);
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
+    /**
+     * run the simulation
+     * there should be no passengers left
+     * BaggageScanner should be shutdown
+     */
+    @Order(15)
     @Test
     public void simulation() {
         this.simulation.run();
+
+        assertTrue(simulation.getScanner().getTraySupplier().getPassengers().isEmpty());
+        assertEquals("Shutdown", simulation.getScanner().getCurrentState().getClass().getSimpleName());
     }
 }

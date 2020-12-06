@@ -36,6 +36,7 @@ public class FederalPoliceOfficer extends Employee {
 
     public void takeWeapon(String weapon) {
         System.out.println("Federal police officer: Weapon was confiscated");
+        if (testFlag) new write().writeTestFile(this.id + "takeWeapon");
     }
 
     public void steerRobot(DisarmRobot robot, BaggageScanner baggageScanner) {

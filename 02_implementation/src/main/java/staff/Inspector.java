@@ -4,12 +4,14 @@ import State.Locked;
 import components.*;
 import data.Record;
 import data.ScanResult;
+import explosivedevicecomponents.DisarmRobot;
 import explosivedevicecomponents.TestStrip;
 import passenger.HandBaggage;
 import passenger.Passenger;
 import test.*;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +36,12 @@ public class Inspector extends Employee {
                 System.out.println("Inspector: Baggage is clean");
             } else {
                 if (testFlag) new write().writeTestFile("reactToProhibited");
-                reactToProhibitedItem(record.getResult().getProhibitedItemType(), scanner, record);
+                reactToProhibitedItem(record.getResult().getProhibitedItemType(), scanner);
             }
         }
     }
 
-    public void reactToProhibitedItem(String itemType, BaggageScanner scanner, Record record) {
+    public void reactToProhibitedItem(String itemType, BaggageScanner scanner) {
         System.out.println("Inspector: The baggage isn't clean");
         Tray tray = scanner.getScanner().move(null);
         scanner.getTracks()[0].trayArrive(tray);
@@ -54,28 +56,28 @@ public class Inspector extends Employee {
 
             case "weapon":
                 System.out.println("Inspector: Weapon was found");
+                triggerAlert(scanner);
                 ((Inspector)scanner.getManualPostControl().getInspector()).notifyWeapon(scanner);
                 break;
 
             case "explosive":
                 System.out.println("Inspector: Explosives was found");
+                triggerAlert(scanner);
 
-                List<HandBaggage> baggages = Arrays.asList(scanner.getManualPostControl().getCurrentPassenger().getBaggages());
-                baggages.stream().filter(x -> x == tray.getContainedBaggage());
-                tray.getContainedBaggage().takeContent(record.getResult().getPosition()[0],
-                        record.getResult().getPosition()[1], record.getResult().getProhibitedItemType().length());
+                List<HandBaggage> baggages = new LinkedList<>(Arrays.asList(scanner.getManualPostControl().getCurrentPassenger().getBaggages()));
+                baggages.remove(tray.getContainedBaggage());
 
-
+                ((Inspector)scanner.getManualPostControl().getInspector()).
+                        testBaggageForExplosiveElements(scanner.getManualPostControl());
                 for (HandBaggage baggage: baggages) {
                     Tray removeTray = new Tray();
                     scanner.getTracks()[0].getTrays().remove(baggage);
                     scanner.getTracks()[1].getTrays().remove(baggage);
                 }
-
-
                 break;
         }
 
+        scanner.getManualPostControl().setCurrentOfficer(null);
         scanner.getManualPostControl().setCurrentPassenger(null);
         if (scanner.getCurrentState() instanceof Locked) {
             ((Supervisor)scanner.getSupervision().getEmployee()).unlockBaggageScanner(scanner);
@@ -125,6 +127,7 @@ public class Inspector extends Employee {
     }
 
     public void notifyWeapon(BaggageScanner baggageScanner) {
+        if (testFlag) new write().writeTestFile("notifyWeapon");
         System.out.println("Inspector: Weapon was notified");
         ManualPostControl manualPostControl = baggageScanner.getManualPostControl();
         manualPostControl.setCurrentTrayToInvestigate(manualPostControl.getTrack().getTrays().getLast());
@@ -141,7 +144,7 @@ public class Inspector extends Employee {
         System.out.println("Inspector took " + string + " out of the baggage of passenger " +
                 manualPostControl.getCurrentPassenger().getName());
 
-        manualPostControl.getCurrentOfficer()[0].takeWeapon(string);
+        manualPostControl.getCurrentOfficer()[2].takeWeapon(string);
         manualPostControl.getCurrentTrayToInvestigate().putBaggage(baggage);
 
         manualPostControl.getTrack().getTrays().add(manualPostControl.getCurrentTrayToInvestigate());
@@ -180,11 +183,14 @@ public class Inspector extends Employee {
         boolean result = manualPostControl.getDetector().testStripe(stripe);
 
         if (result) {
+            if (testFlag) new write().writeTestFile("explosiveApproved");
             System.out.println("Inspector: Explosives found");
             FederalPoliceOfficer explosivesOfficer = Arrays.stream(manualPostControl.getCurrentOfficer()).
                     filter(federalPoliceOfficer -> federalPoliceOfficer.getId().equals("O2")).findFirst().orElseThrow();
 
-            explosivesOfficer.steerRobot(explosivesOfficer.getOffice().getDisarmRobot(), manualPostControl.getScanner());
+            DisarmRobot robot = explosivesOfficer.getOffice().getDisarmRobot();
+            if (explosivesOfficer.isTestFlag()) robot.setTestFlag(true);
+            explosivesOfficer.steerRobot(robot, manualPostControl.getScanner());
         } else {
             System.out.println("Inspector: Explosives not found");
         }

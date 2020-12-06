@@ -38,8 +38,8 @@ public class BaggageScanner implements  IBaggageScanner{
         permissionShift.put("moveForward", 0);
         permissionShift.put("moveBackward", 0);
         permissionShift.put("alarm", 0);
-        permissionShift.put("report", 2);
-        permissionShift.put("maintenance", 3);
+        permissionShift.put("report", 1);
+        permissionShift.put("maintenance", 2);
     }
 
     @Override
@@ -107,13 +107,13 @@ public class BaggageScanner implements  IBaggageScanner{
         }
 
         manualPostControl.setCurrentPassenger(passenger);
-        manualPostControl.setCurrentOfficer(new FederalPoliceOfficer[] {this.officer});
+        manualPostControl.setCurrentOfficer(new FederalPoliceOfficer[] {this.officer, null, null});
         manualPostControl.getCurrentOfficer()[0] = this.officer;
         FederalPoliceOfficer[] inforcement = officer.getOffice().requestReinforcement();
 
         for (int i = 0; i < inforcement.length; i++) {
             if (this.officer.isTestFlag()) inforcement[i].setTestFlag(true);
-            manualPostControl.setCurrentOfficer(inforcement);
+            manualPostControl.getCurrentOfficer()[i+1] = inforcement[i];
         }
     }
 
@@ -139,7 +139,7 @@ public class BaggageScanner implements  IBaggageScanner{
 
         System.out.println("Perform maintenance");
 
-        currentState.scansDone();
+        currentState = currentState.scansDone();
     }
 
     public boolean checkPermissions(int shift) {
@@ -147,7 +147,7 @@ public class BaggageScanner implements  IBaggageScanner{
         String auth = operationStation.getUserType();
         byte value = permissions.get(auth);
 
-        if ((value & 1 << shift) == 0) {
+        if ((value & (1 << shift)) == 0) {
             System.out.println("Unauthorized usage");
             return false;
         }
@@ -155,33 +155,8 @@ public class BaggageScanner implements  IBaggageScanner{
     }
 
     public boolean checkPermissions(String activity) {
-        String auth = operationStation.getUserType();
-        switch(auth) {
-            case "S":
-                switch (activity) {
-                    case "report":
-                        return true;
-                }
-                break;
 
-            case "T":
-                switch (activity) {
-                    case "maintenance":
-                        return true;
-                }
-                break;
-
-            case "I":
-                switch (activity) {
-                    case "moveForward":
-                    case "moveBackward":
-                    case "scan":
-                    case "alarm":
-                        return true;
-                }
-                break;
-        }
-        return false;
+        return checkPermissions(permissionShift.get(activity));
     }
 
     public Track[] getTracks() {
