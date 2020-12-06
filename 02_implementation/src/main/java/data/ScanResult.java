@@ -3,9 +3,9 @@ package data;
 public class ScanResult {
     public static String ITEM_TYPE_CLEAN = "CLEAN";
     public static String ITEM_TYPE_PROHIBITED_ITEM = "PROHIBITED";
-    public static String PROHIBITED_ITEM_TYPE_KNIFE = "KNIFE";
-    public static String PROHIBITED_ITEM_TYPE_WEAPON = "WEAPON";
-    public static String PROHIBITED_ITEM_TYPE_EXPLOSIVE = "EXPLOSIVES";
+    public static String PROHIBITED_ITEM_TYPE_KNIFE = "knife";
+    public static String PROHIBITED_ITEM_TYPE_WEAPON = "weapon";
+    public static String PROHIBITED_ITEM_TYPE_EXPLOSIVE = "explosive";
 
     private String itemType;
     private String prohibitedItemType;

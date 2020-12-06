@@ -1,33 +1,22 @@
 import algorithms.AES;
-
 import components.BaggageScanner;
 import components.Scanner;
-
 import data.ScanResult;
-
-import passenger.HandBaggage;
-
-import passenger.Layer;
-import passenger.Passenger;
-import simulation.Configuration;
-import simulation.Simulation;
-
-import staff.Employee;
-import staff.Supervisor;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import passenger.HandBaggage;
+import passenger.Passenger;
+import simulation.Configuration;
+import simulation.Simulation;
+import staff.Employee;
+import staff.Supervisor;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.*;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.List;
 
 public class TestSecurity {
 
@@ -70,7 +59,7 @@ public class TestSecurity {
                 char prohibitedItemType = record.getResult().getProhibitedItemType().charAt(0);
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
-                assertEquals(prohibitedItemInformation1[0].charAt(0), prohibitedItemType);
+                assertEquals(prohibitedItemInformation1[0].toLowerCase().charAt(0), prohibitedItemType);
                 assertEquals(Integer.parseInt(prohibitedItemInformation1[2]) - 1, record.getResult().getPosition()[0]);
 
             } else if (!prohibitedItem2.equals("-") && Integer.parseInt(prohibitedItemInformation2[1]) - 1 == i) {
@@ -78,7 +67,7 @@ public class TestSecurity {
                 char prohibitedItemType = record.getResult().getProhibitedItemType().charAt(0);
 
                 assertEquals("PROHIBITED", record.getResult().getItemType());
-                assertEquals(prohibitedItemInformation2[0].charAt(0), prohibitedItemType);
+                assertEquals(prohibitedItemInformation2[0].toLowerCase().charAt(0), prohibitedItemType);
                 assertEquals(Integer.parseInt(prohibitedItemInformation2[2]) - 1, record.getResult().getPosition()[0]);
 
             } else {
@@ -226,7 +215,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("kn!fe", result.getProhibitedItemType());
+        assertEquals("knife", result.getProhibitedItemType());
     }
 
     @Test
@@ -240,7 +229,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("glock|7", result.getProhibitedItemType());
+        assertEquals("weapon", result.getProhibitedItemType());
     }
 
     @Test
@@ -254,7 +243,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("exp|os!ve", result.getProhibitedItemType());
+        assertEquals("explosive", result.getProhibitedItemType());
     }
 
     @ParameterizedTest()
