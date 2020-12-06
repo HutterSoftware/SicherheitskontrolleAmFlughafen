@@ -7,6 +7,7 @@ import data.ScanResult;
 
 import passenger.HandBaggage;
 
+import passenger.Layer;
 import passenger.Passenger;
 import simulation.Configuration;
 import simulation.Simulation;
@@ -50,7 +51,7 @@ public class TestSecurity {
         assertEquals(numberOfBaggages, passenger.getBaggages().length);
 
         for (int i = 0; i < numberOfBaggages; i++) {
-System.out.println(name + " " + i);
+
             HandBaggage baggage = passenger.getBaggages()[i];
             String test = new String(baggage.getLayers()[4].getContent());
             System.out.println(test.contains("glock|7"));

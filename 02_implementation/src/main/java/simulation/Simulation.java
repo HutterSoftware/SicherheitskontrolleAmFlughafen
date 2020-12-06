@@ -97,43 +97,105 @@ public class Simulation {
       
         public void defaultPassengers()  {
             try {
+                char[] validCharacters = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                        'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6',
+                        '7', '8', '9', '!', '@', '#', '$', '^', '&', '*', '(', ')', '_', '-', '+', '=', '!'};
+
+                char[][] plainContent = new char[5][10000];
+                for (int j = 0; j < 5; j++) {
+                    for (int i = 0; i < 10000; i++) {
+                        plainContent[j][i] = validCharacters[(int)(System.currentTimeMillis()+i * 17) % validCharacters.length];
+                        Thread.sleep(0,0);
+                    }
+                }
+
+
                 File passengerList = new File(getClass().getClassLoader().getResource("passenger_baggage.txt").toURI());
                 BufferedReader reader = new BufferedReader(new FileReader(passengerList));
                 String line = reader.readLine();
-                int offset = 1;
+
                 while (line != null) {
+
+
                     String[] passengerInformations = line.split(";");
+                    int countOfBaggage = Integer.parseInt(passengerInformations[1]);
                     Passenger passenger = new Passenger(passengerInformations[0]);
 
-                    List<HandBaggage> baggages = new ArrayList<>(passengerInformations.length - 1);
-                    for (int i = 0; i < Integer.parseInt(passengerInformations[1]); i++) {
-                        String fileName = "./src/main/resources/";
-                        if (offset < 10) {
-                            fileName += "00" + Integer.toString(offset);
-                        } else if (offset < 100) {
-                            fileName += "0" + Integer.toString(offset);
-                        } else {
-                            fileName += Integer.toString(offset);
+                    List<String[]> listOfProhibitedItems = new ArrayList();
+                    if (!passengerInformations[2].equals("-")) {
+                        for (int i = 2; i < passengerInformations.length; i++) {
+                            String[] parameterSplit = passengerInformations[i].replace("[","").
+                                    replace("]","").split(",");
+
+                            listOfProhibitedItems.add(parameterSplit);
                         }
-                        fileName += "_baggage.txt";
-                        File baggageFile = new File(fileName);
-                        //System.out.println(baggageFile.getAbsolutePath());
-                        BufferedReader baggageReader = new BufferedReader(new FileReader(baggageFile));
-                        Layer[] layers = new Layer[5];
-                        for (int j = 0; j < 5; j++) {
-                            String baggageLine = baggageReader.readLine();
-                            layers[j] = new Layer(baggageLine.toCharArray());
-                        }
-                        baggages.add(new HandBaggage(passenger, layers));
-                        offset++;
                     }
 
-                    passenger.setBaggages(baggages.toArray(new HandBaggage[0]));
+                    int prohibitedItemCounter = 0;
+                    HandBaggage[] baggages = new HandBaggage[countOfBaggage];
+
+
+
+                    for (int i = 0; i < countOfBaggage; i++) {
+                        Layer[] layerList = new Layer[5];
+
+                        for (int j = 0; j < 5; j++) {
+                            String layer = "";
+
+                            if (prohibitedItemCounter < listOfProhibitedItems.size()) {
+                                if ((Integer.parseInt(listOfProhibitedItems.get(prohibitedItemCounter)[1]) - 1) == i &&
+                                    (Integer.parseInt(listOfProhibitedItems.get(prohibitedItemCounter)[2]) - 1) == j) {
+
+
+                                    char[] modified = Arrays.copyOf(plainContent[j],plainContent[j].length);
+                                    int itemLength = 0;
+                                    String item = "";
+                                    switch (listOfProhibitedItems.get(prohibitedItemCounter)[0]) {
+                                        case "K":
+                                            item = "kn!fe";
+                                            itemLength = item.length();
+                                            break;
+
+                                        case "W":
+                                            item = "glock|7";
+                                            itemLength = item.length();
+                                            break;
+
+                                        case "E":
+                                            item = "exp|os!ve";
+                                            itemLength = item.length();
+                                            break;
+                                    }
+
+                                    int startIndex = Math.abs((int)
+                                            ((System.currentTimeMillis() * 17) % 10000) - itemLength);
+
+                                    for (int k = startIndex; k < startIndex + itemLength; k++) {
+                                        modified[k] = item.charAt(k - startIndex);
+                                    }
+                                    layer = new String(modified);
+                                    prohibitedItemCounter++;
+                                } else {
+                                    layer = new String(plainContent[j]);
+                                }
+                            } else {
+                                layer = new String(plainContent[j]);
+                            }
+
+                            layerList[j] = new Layer(layer.toCharArray());
+                        }
+                        baggages[i] = new HandBaggage(passenger, layerList);
+                    }
+
+                    passenger.setBaggages(baggages);
                     addPassenger(passenger);
                     line = reader.readLine();
                 }
             } catch (IOException | URISyntaxException ex) {
-                // TODO: Wenn alle Pakete da sind nochmal prüfen. Es sollte dann keinen Fehler werfen.
+                ex.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
