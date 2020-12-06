@@ -5,7 +5,6 @@ import components.Scanner;
 
 import data.ScanResult;
 
-import org.junit.jupiter.api.*;
 import passenger.HandBaggage;
 import passenger.Passenger;
 
@@ -15,6 +14,9 @@ import simulation.Simulation;
 import staff.Employee;
 import staff.Supervisor;
 
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
