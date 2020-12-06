@@ -107,7 +107,7 @@ public class BaggageScanner implements  IBaggageScanner{
         }
 
         manualPostControl.setCurrentPassenger(passenger);
-        manualPostControl.setCurrentOfficer(new FederalPoliceOfficer[] {this.officer});
+        manualPostControl.setCurrentOfficer(new FederalPoliceOfficer[] {this.officer, null, null});
         manualPostControl.getCurrentOfficer()[0] = this.officer;
         FederalPoliceOfficer[] inforcement = officer.getOffice().requestReinforcement();
 
