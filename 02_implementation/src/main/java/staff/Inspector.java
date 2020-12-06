@@ -7,6 +7,7 @@ import data.ScanResult;
 import explosivedevicecomponents.TestStrip;
 import passenger.HandBaggage;
 import passenger.Passenger;
+import test.write;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class Inspector extends Employee {
     private boolean isSenior;
+    private boolean testFlag = false;
 
     public Inspector(String id, String name, String birthDate, boolean isSenior) {
         this.id = id;
@@ -31,6 +33,7 @@ public class Inspector extends Employee {
             if (record.getResult().getItemType() == ScanResult.ITEM_TYPE_CLEAN) {
                 System.out.println("Inspector: Baggage is clean");
             } else {
+                if (testFlag) new write().writeTestFile("reactToProhibited");
                 reactToProhibitedItem(record.getResult().getProhibitedItemType(), scanner);
             }
         }
@@ -40,6 +43,7 @@ public class Inspector extends Employee {
         System.out.println("Inspector: The baggage isn't clean");
         Tray tray = scanner.getScanner().move(null);
         scanner.getTracks()[0].trayArrive(tray);
+        if (testFlag) new write().writeTestFile("prohibited1");
 
         switch (itemType) {
             case "KNIFE":
@@ -90,6 +94,7 @@ public class Inspector extends Employee {
     }
 
     public void notifyKnife (BaggageScanner baggageScanner) {
+        if (testFlag) new write().writeTestFile("notifyKnife");
         System.out.println("Inspector: Notify knife");
         ManualPostControl manualPostControl = baggageScanner.getManualPostControl();
         Track[] tracks = baggageScanner.getTracks();
@@ -179,5 +184,9 @@ public class Inspector extends Employee {
         } else {
             System.out.println("Inspector: Explosives not found");
         }
+    }
+
+    public void setTestFlag(boolean testFlag) {
+        this.testFlag = testFlag;
     }
 }
