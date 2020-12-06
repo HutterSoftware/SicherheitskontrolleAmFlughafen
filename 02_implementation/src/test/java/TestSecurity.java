@@ -26,6 +26,8 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TestSecurity {
 
@@ -280,22 +282,35 @@ public class TestSecurity {
     }
 
     @Test
-    public void noProhibitedProcessTest() {
+    public void noProhibitedProcedureTest() throws IOException, URISyntaxException {
+
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "normal_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
+
+
+        //File f = new File(Thread.currentThread().getContextClassLoader().getResource("001_baggage.txt").toURI());
+    }
+
+    @Test
+    public void knifeProcessTest() throws IOException, URISyntaxException {
+
+        TestUtils.clearProcedureTestFile();
+        TestUtils.setTestPassenger(this.simulation, "knife_baggage.txt");
+        TestUtils.setTestFlag(this.simulation);
+
+        this.simulation.run();
+    }
+
+    @Test
+    public void weaponProcedureTest() {
 
     }
 
     @Test
-    public void knifeProcessTest() {
-
-    }
-
-    @Test
-    public void weaponProcessTest() {
-
-    }
-
-    @Test
-    public void explosivesProcessTest() {
+    public void explosivesProcedureTest() {
 
     }
 }
