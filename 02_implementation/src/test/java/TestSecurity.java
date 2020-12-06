@@ -226,7 +226,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("kn!fe", result.getProhibitedItemType());
+        assertEquals("KNIFE", result.getProhibitedItemType());
     }
 
     @Test
@@ -240,7 +240,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("glock|7", result.getProhibitedItemType());
+        assertEquals("WEAPON", result.getProhibitedItemType());
     }
 
     @Test
@@ -254,7 +254,7 @@ public class TestSecurity {
         ScanResult result = record.getResult();
 
         assertEquals("PROHIBITED", result.getItemType());
-        assertEquals("exp|os!ve", result.getProhibitedItemType());
+        assertEquals("EXPLOSIVES", result.getProhibitedItemType());
     }
 
     @ParameterizedTest()
