@@ -1,4 +1,4 @@
-moveForward|scanBaggage|reactToProhibited|prohibited1|removeItem|moveForward|moveForward|
+moveForward|scanBaggage|moveForward|clean2|
 moveForward|scanBaggage|reactToProhibited|prohibited1|notifyKnife|removeItem|moveBackward|scanBaggage|moveForward|clean2|
-WEAPON
+moveForward|scanBaggage|reactToProhibited|prohibited1|notifyWeapon|removeItem|O3takeWeapon|moveForward|moveForward|
 EXPLOSIVE

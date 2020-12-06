@@ -10,6 +10,7 @@ import passenger.Passenger;
 import test.*;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,6 +125,7 @@ public class Inspector extends Employee {
     }
 
     public void notifyWeapon(BaggageScanner baggageScanner) {
+        if (testFlag) new write().writeTestFile("notifyWeapon");
         System.out.println("Inspector: Weapon was notified");
         ManualPostControl manualPostControl = baggageScanner.getManualPostControl();
         manualPostControl.setCurrentTrayToInvestigate(manualPostControl.getTrack().getTrays().getLast());
