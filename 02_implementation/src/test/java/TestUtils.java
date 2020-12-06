@@ -143,11 +143,10 @@ public class TestUtils {
      * load the actual procedure from a file
      * @return a string with the actual procedure
      * @throws IOException IOException
-     * @throws URISyntaxException URISyntaxException
      */
-    public static String readActualProcedure() throws IOException, URISyntaxException {
+    public static String readActualProcedure() throws IOException {
 
-        File procedure = new File(Thread.currentThread().getContextClassLoader().getResource("Procedure.txt").toURI());
+        File procedure = new File("./src/main/resources/Procedure.txt");
         BufferedReader reader = new BufferedReader(new FileReader(procedure));
 
         return reader.readLine();

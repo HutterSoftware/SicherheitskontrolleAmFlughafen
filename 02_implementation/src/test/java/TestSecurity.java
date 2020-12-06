@@ -288,6 +288,8 @@ public class TestSecurity {
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
     @Test
@@ -303,6 +305,8 @@ public class TestSecurity {
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
     @Test
@@ -318,6 +322,8 @@ public class TestSecurity {
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
     @Test
@@ -333,10 +339,11 @@ public class TestSecurity {
         String actual = TestUtils.readActualProcedure();
 
         assertEquals(correct, actual);
+
+        TestUtils.clearProcedureTestFile();
     }
 
     @Test
-    @Disabled
     public void simulation() {
         this.simulation.run();
     }
