@@ -5,6 +5,7 @@ import components.Scanner;
 
 import data.ScanResult;
 
+import org.junit.jupiter.api.*;
 import passenger.HandBaggage;
 import passenger.Passenger;
 
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.*;
 import java.net.URISyntaxException;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestSecurity {
 
     private Simulation simulation;
@@ -41,6 +43,7 @@ public class TestSecurity {
         this.simulation.initializeSimulation();
     }
 
+    @Order(1)
     @ParameterizedTest()
     @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
     public void simulationTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
@@ -84,6 +87,7 @@ public class TestSecurity {
         }
     }
 
+    @Order(2)
     @Test
     public void employeePositionTest() {
 
@@ -118,6 +122,7 @@ public class TestSecurity {
         assertEquals("O", oStripeContent.split("\\*\\*\\*")[1]);
     }
 
+    @Order(3)
     @Test
     public void lockIDCardTest() {
 
@@ -130,6 +135,7 @@ public class TestSecurity {
         assertTrue(inspector.getIdCard().isLocked());
     }
 
+    @Order(4)
     @Test
     public void scannerLoginTest() {
 
@@ -144,6 +150,7 @@ public class TestSecurity {
         assertEquals("", simulation.getScanner().getOperationStation().getAuthentication());
     }
 
+    @Order(5)
     @Test
     public void employeeProfileTest() {
 
@@ -185,6 +192,7 @@ public class TestSecurity {
         assertTrue(scanner.checkPermissions("maintenance"));
     }
 
+    @Order(6)
     @Test
     public void unlockScannerTest() {
 
@@ -211,6 +219,7 @@ public class TestSecurity {
         assertEquals("Activated", scanner.getCurrentState().getClass().getSimpleName());
     }
 
+    @Order(7)
     @Test
     public void knifeTest() throws IOException, URISyntaxException {
 
@@ -225,6 +234,7 @@ public class TestSecurity {
         assertEquals("knife", result.getProhibitedItemType());
     }
 
+    @Order(8)
     @Test
     public void weaponTest() throws IOException, URISyntaxException {
 
@@ -239,6 +249,7 @@ public class TestSecurity {
         assertEquals("weapon", result.getProhibitedItemType());
     }
 
+    @Order(9)
     @Test
     public void explosiveTest() throws IOException, URISyntaxException {
 
@@ -253,6 +264,7 @@ public class TestSecurity {
         assertEquals("explosive", result.getProhibitedItemType());
     }
 
+    @Order(10)
     @ParameterizedTest()
     @CsvFileSource(resources = "passenger_baggage_index.txt", delimiter = ';')
     public void scanRecordTest(int passengerIndex, int baggageIndex, String name, int numberOfBaggages, String prohibitedItem1, String prohibitedItem2) {
@@ -275,6 +287,7 @@ public class TestSecurity {
         }
     }
 
+    @Order(11)
     @Test
     public void noProhibitedProcedureTest() throws IOException, URISyntaxException {
 
@@ -292,6 +305,7 @@ public class TestSecurity {
         TestUtils.clearProcedureTestFile();
     }
 
+    @Order(12)
     @Test
     public void knifeProcessTest() throws IOException, URISyntaxException {
 
@@ -309,6 +323,7 @@ public class TestSecurity {
         TestUtils.clearProcedureTestFile();
     }
 
+    @Order(13)
     @Test
     public void weaponProcedureTest() throws IOException, URISyntaxException {
 
@@ -326,6 +341,7 @@ public class TestSecurity {
         TestUtils.clearProcedureTestFile();
     }
 
+    @Order(14)
     @Test
     public void explosivesProcedureTest() throws IOException, URISyntaxException {
 
@@ -343,6 +359,7 @@ public class TestSecurity {
         TestUtils.clearProcedureTestFile();
     }
 
+    @Order(15)
     @Test
     public void simulation() {
         this.simulation.run();
