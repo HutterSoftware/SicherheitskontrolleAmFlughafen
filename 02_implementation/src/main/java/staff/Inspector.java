@@ -46,17 +46,17 @@ public class Inspector extends Employee {
         if (testFlag) new write().writeTestFile("prohibited1");
 
         switch (itemType) {
-            case "KNIFE":
+            case "knife":
                 System.out.println("Insepctor: Knife was found");
                 ((Inspector)scanner.getManualPostControl().getInspector()).notifyKnife(scanner);
                 break;
 
-            case "WEAPON":
+            case "weapon":
                 System.out.println("Inspector: Weapon was found");
                 ((Inspector)scanner.getManualPostControl().getInspector()).notifyWeapon(scanner);
                 break;
 
-            case "EXPLOSIVES":
+            case "explosive":
                 System.out.println("Inspector: Explosives was found");
                 triggerAlert(scanner);
 
