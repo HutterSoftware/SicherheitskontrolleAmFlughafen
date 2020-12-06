@@ -56,6 +56,7 @@ public class Inspector extends Employee {
 
             case "weapon":
                 System.out.println("Inspector: Weapon was found");
+                triggerAlert(scanner);
                 ((Inspector)scanner.getManualPostControl().getInspector()).notifyWeapon(scanner);
                 break;
 
